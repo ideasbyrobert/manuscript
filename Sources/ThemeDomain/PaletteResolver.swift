@@ -162,7 +162,7 @@ struct PaletteResolver
     }
 
     private func neutral(
-        _ target: ContrastRatio,
+        _ target: Readability,
         tintedBy factor: Double) -> SRGB
     {
         let wanted = tint.scaled(by: factor)

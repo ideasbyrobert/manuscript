@@ -39,9 +39,9 @@ struct PresetTests
             lightTint: 0.01,
             darkTint: 0.01,
             inks: Preset.ember.inks,
-            overrides: [.type: 9.4])
+            overrides: [.type: 87])
         let standard = ContrastGoals.bySlot[.type]!
-        #expect(overridden.goal(for: .type).target == 9.4)
+        #expect(overridden.goal(for: .type).target == 87)
         #expect(
             overridden.goal(for: .type).chromaFactor == standard.chromaFactor)
     }

@@ -9,7 +9,7 @@ struct Preset: Sendable, Identifiable
     let lightTint: Chroma
     let darkTint: Chroma
     let inks: [InkSlot: SystemColour]
-    let overrides: [InkSlot: ContrastRatio]
+    let overrides: [InkSlot: Readability]
 
     init(
         id: String,
@@ -18,7 +18,7 @@ struct Preset: Sendable, Identifiable
         lightTint: Double,
         darkTint: Double,
         inks: [InkSlot: SystemColour],
-        overrides: [InkSlot: ContrastRatio] = [:])
+        overrides: [InkSlot: Readability] = [:])
     {
         precondition(
             Set(InkSlot.allCases).subtracting(inks.keys).isEmpty,
@@ -40,7 +40,7 @@ struct Preset: Sendable, Identifiable
     func goal(for slot: InkSlot) -> ContrastGoal
     {
         let base = ContrastGoals.bySlot[slot]
-            ?? ContrastGoal(5.5, chromaFactor: 1)
+            ?? ContrastGoal(75, chromaFactor: 1)
         guard let override = overrides[slot] else
         {
             return base

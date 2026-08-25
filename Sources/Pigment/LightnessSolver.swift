@@ -45,6 +45,46 @@ package struct LightnessSolver: Sendable
         return Lightness.midpoint(failing, succeeding)
     }
 
+    package func lightnessReaching(
+        _ target: Readability,
+        hue: Hue,
+        chroma: Chroma) -> Lightness
+    {
+        let extreme = inkGrowsLighter
+            ? Lightness.lightest
+            : Lightness.darkest
+        precondition(
+            readability(at: extreme, hue: hue, chroma: chroma)
+                >= target.magnitude,
+            "no lightness on this ground reaches \(target.magnitude)")
+
+        var failing = groundLightness
+        var succeeding = extreme
+        for _ in 0 ..< Self.refinements
+        {
+            let candidate = Lightness.midpoint(failing, succeeding)
+            if readability(at: candidate, hue: hue, chroma: chroma)
+                >= target.magnitude
+            {
+                succeeding = candidate
+            }
+            else
+            {
+                failing = candidate
+            }
+        }
+        return Lightness.midpoint(failing, succeeding)
+    }
+
+    private func readability(
+        at lightness: Lightness,
+        hue: Hue,
+        chroma: Chroma) -> Double
+    {
+        let ink = OKLCh(lightness: lightness, chroma: chroma, hue: hue).srgb
+        return Readability.between(ink, ground).magnitude
+    }
+
     private func contrast(
         at lightness: Lightness,
         hue: Hue,

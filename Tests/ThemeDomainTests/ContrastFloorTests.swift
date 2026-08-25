@@ -40,9 +40,9 @@ struct ContrastFloorTests
 
     private static let bands: [PaletteName: ClosedRange<Double>] =
     [
-        .whitespace: 1.5 ... 2.6,
-        .indentGuide: 1.2 ... 1.9,
-        .ghostText: 1.8 ... 2.5
+        .whitespace: 28 ... 38,
+        .indentGuide: 15 ... 24,
+        .ghostText: 33 ... 45
     ]
 
     private static let grounds: [PaletteName] =
@@ -85,7 +85,9 @@ struct ContrastFloorTests
     {
         for (name, band) in Self.bands
         {
-            let measured = theme.palette.contrast(name).value
+            let measured = Readability.between(
+                theme.palette[name],
+                theme.palette[.background]).magnitude
             #expect(band.contains(measured), "\(theme) \(name) is \(measured)")
         }
     }
@@ -98,11 +100,11 @@ struct ContrastFloorTests
         {
             for other in frequent where other != one
             {
-                let first = OKLCh(theme.palette[one])
-                let second = OKLCh(theme.palette[other])
-                let confusable = first.hue.separation(from: second.hue) < 8
-                    && first.lightness.distance(to: second.lightness) < 0.06
-                #expect(!confusable, "\(theme): \(one) and \(other)")
+                let apart = OKLab(theme.palette[one])
+                    .difference(from: OKLab(theme.palette[other]))
+                #expect(
+                    apart >= 0.04,
+                    "\(theme): \(one) and \(other) differ by \(apart)")
             }
         }
     }

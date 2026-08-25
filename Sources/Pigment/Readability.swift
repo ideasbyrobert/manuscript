@@ -72,3 +72,11 @@ package struct Readability: Hashable, Comparable, Sendable
             : light + pow(blackThreshold - light, blackClamp)
     }
 }
+
+extension Readability: ExpressibleByIntegerLiteral
+{
+    package init(integerLiteral value: Int)
+    {
+        self.init(Double(value))
+    }
+}

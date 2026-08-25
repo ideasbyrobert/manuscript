@@ -20,5 +20,5 @@ extension Preset
             .preprocessor: .brown,
             .link: .blue
         ],
-        overrides: [.type: 9.40])
+        overrides: [.type: 87])
 }

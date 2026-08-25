@@ -13,6 +13,14 @@ struct OKLab: Hashable, Sendable
         self.b = b
     }
 
+    package func difference(from other: OKLab) -> Double
+    {
+        let light = lightness - other.lightness
+        let green = a - other.a
+        let blue = b - other.b
+        return (light * light + green * green + blue * blue).squareRoot()
+    }
+
     init(_ colour: SRGB)
     {
         let linear = LinearRGB(colour)

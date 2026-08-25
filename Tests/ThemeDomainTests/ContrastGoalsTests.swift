@@ -15,12 +15,12 @@ struct ContrastGoalsTests
         }
     }
 
-    @Test("every syntax goal clears the accessible minimum")
-    func syntaxClearsFourAndAHalf()
+    @Test("every syntax goal clears the content-text level")
+    func syntaxClearsContentText()
     {
         for (slot, goal) in ContrastGoals.bySlot
         {
-            #expect(goal.target >= 4.5, "\(slot) at \(goal.target.value)")
+            #expect(goal.target >= 60, "\(slot) at \(goal.target.value)")
         }
     }
 
@@ -29,7 +29,7 @@ struct ContrastGoalsTests
     {
         let quietest = ContrastGoals.bySlot.values
             .map(\.target)
-            .min() ?? ContrastRatio(0)
+            .min() ?? Readability(0)
         #expect(ContrastGoals.comment < quietest)
         #expect(ContrastGoals.whitespace < ContrastGoals.comment)
         #expect(ContrastGoals.indentGuide < ContrastGoals.whitespace)
@@ -65,9 +65,9 @@ struct ContrastGoalsTests
     @Test("retargeting keeps the chroma factor")
     func retargetingIsSurgical()
     {
-        let original = ContrastGoal(5.0, chromaFactor: 0.8)
-        let louder = original.reaching(9.0)
-        #expect(louder.target == 9.0)
+        let original = ContrastGoal(50, chromaFactor: 0.8)
+        let louder = original.reaching(90)
+        #expect(louder.target == 90)
         #expect(louder.chromaFactor == original.chromaFactor)
     }
 }
