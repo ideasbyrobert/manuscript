@@ -36,25 +36,31 @@ package enum HighlightJS
         TokenBinding(
             [".hljs-title", ".hljs-title.function_",
              ".hljs-function .hljs-title", ".hljs-section",
-             ".hljs-name", ".hljs-selector-id", ".hljs-selector-class"],
+             ".hljs-name", ".hljs-selector-id", ".hljs-selector-class",
+             ".hljs-selector-attr", ".hljs-selector-pseudo"],
             .member),
         TokenBinding(
             [".hljs-string", ".hljs-regexp", ".hljs-attribute",
-             ".hljs-meta .hljs-string"],
+             ".hljs-meta .hljs-string", ".hljs-meta-string",
+             ".hljs-code"],
             .string),
+        TokenBinding([".hljs-char.escape_"], .alternateString),
         TokenBinding([".hljs-number"], .number),
         TokenBinding(
-            [".hljs-meta", ".hljs-meta-keyword", ".hljs-meta .hljs-keyword"],
+            [".hljs-meta", ".hljs-meta-keyword",
+             ".hljs-meta .hljs-keyword", ".hljs-template-tag"],
             .preprocessor),
         TokenBinding(
             [".hljs-variable", ".hljs-template-variable", ".hljs-attr",
              ".hljs-property", ".hljs-params"],
             .alternateMember),
         TokenBinding(
-            [".hljs-built_in", ".hljs-symbol", ".hljs-bullet"],
+            [".hljs-built_in", ".hljs-symbol", ".hljs-bullet",
+             ".hljs-formula"],
             .alternateType),
         TokenBinding(
-            [".hljs-operator", ".hljs-punctuation", ".hljs-subst"],
+            [".hljs-operator", ".hljs-punctuation", ".hljs-subst",
+             ".hljs-tag"],
             .operator),
         TokenBinding([".hljs-link"], .link),
         TokenBinding([".hljs-addition"], .addition),
