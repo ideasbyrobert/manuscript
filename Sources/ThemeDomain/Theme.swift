@@ -1,13 +1,13 @@
 import AppleColors
 import Pigment
 
-public struct Theme: Sendable
+struct Theme: Sendable
 {
-    public let preset: Preset
-    public let appearance: Appearance
-    public let palette: Palette
+    let preset: Preset
+    let appearance: Appearance
+    let palette: Palette
 
-    public init(
+    init(
         preset: Preset,
         appearance: Appearance,
         systemColours: any SystemColourSource = RecordedSystemColours.macOS27)
@@ -20,17 +20,17 @@ public struct Theme: Sendable
             systemColours: systemColours).resolve()
     }
 
-    public var identifier: String
+    var identifier: String
     {
         "\(preset.id)-\(appearance.rawValue)"
     }
 
-    public var title: String
+    package var title: String
     {
         "\(preset.title) \(appearance.title)"
     }
 
-    public static func catalogue(
+    static func catalogue(
         systemColours: any SystemColourSource = RecordedSystemColours.macOS27)
         -> [Theme]
     {
@@ -49,7 +49,7 @@ public struct Theme: Sendable
 
 extension Theme: CustomStringConvertible
 {
-    public var description: String
+    var description: String
     {
         identifier
     }

@@ -1,9 +1,9 @@
 import AppleColors
 import Pigment
 
-public enum GroundLightness
+enum GroundLightness
 {
-    public static func of(_ appearance: Appearance) -> Lightness
+    package static func of(_ appearance: Appearance) -> Lightness
     {
         switch appearance
         {
@@ -12,7 +12,7 @@ public enum GroundLightness
         }
     }
 
-    public static func tintCeiling(for appearance: Appearance) -> Double
+    static func tintCeiling(for appearance: Appearance) -> Double
     {
         appearance == .dark ? 0.034 : 0.028
     }

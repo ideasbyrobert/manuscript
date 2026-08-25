@@ -2,7 +2,7 @@ import AppleColors
 
 extension Preset
 {
-    public static let sunrise = Preset(
+    static let sunrise = Preset(
         id: "sunrise",
         title: "Sunrise",
         tintHue: 88,

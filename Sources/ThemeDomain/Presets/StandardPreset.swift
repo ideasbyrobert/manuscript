@@ -2,7 +2,7 @@ import AppleColors
 
 extension Preset
 {
-    public static let standard = Preset(
+    static let standard = Preset(
         id: "standard",
         title: "Standard",
         tintHue: 258,

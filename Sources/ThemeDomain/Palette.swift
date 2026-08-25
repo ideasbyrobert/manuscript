@@ -1,27 +1,27 @@
 import Pigment
 
-public struct Palette: Sendable
+struct Palette: Sendable
 {
     private let swatches: [PaletteName: SRGB]
 
-    public init(swatches: [PaletteName: SRGB])
+    init(swatches: [PaletteName: SRGB])
     {
         let missing = Set(PaletteName.allCases).subtracting(swatches.keys)
         precondition(missing.isEmpty, "palette is missing \(missing)")
         self.swatches = swatches
     }
 
-    public subscript(name: PaletteName) -> SRGB
+    subscript(name: PaletteName) -> SRGB
     {
         swatches[name]!
     }
 
-    public func notation(_ name: PaletteName) -> String
+    func notation(_ name: PaletteName) -> String
     {
         self[name].hexNotation
     }
 
-    public func contrast(
+    func contrast(
         _ ink: PaletteName,
         against ground: PaletteName = .background) -> ContrastRatio
     {

@@ -1,17 +1,17 @@
 import AppleColors
 import Pigment
 
-public struct Preset: Sendable, Identifiable
+struct Preset: Sendable, Identifiable
 {
-    public let id: String
-    public let title: String
-    public let tintHue: Hue
-    public let lightTint: Chroma
-    public let darkTint: Chroma
-    public let inks: [InkSlot: SystemColour]
-    public let overrides: [InkSlot: ContrastRatio]
+    let id: String
+    package let title: String
+    let tintHue: Hue
+    let lightTint: Chroma
+    let darkTint: Chroma
+    let inks: [InkSlot: SystemColour]
+    let overrides: [InkSlot: ContrastRatio]
 
-    public init(
+    init(
         id: String,
         title: String,
         tintHue: Double,
@@ -32,12 +32,12 @@ public struct Preset: Sendable, Identifiable
         self.overrides = overrides
     }
 
-    public func ink(for slot: InkSlot) -> SystemColour
+    func ink(for slot: InkSlot) -> SystemColour
     {
         inks[slot] ?? .gray
     }
 
-    public func goal(for slot: InkSlot) -> ContrastGoal
+    func goal(for slot: InkSlot) -> ContrastGoal
     {
         let base = ContrastGoals.bySlot[slot]
             ?? ContrastGoal(5.5, chromaFactor: 1)
@@ -48,7 +48,7 @@ public struct Preset: Sendable, Identifiable
         return base.reaching(override)
     }
 
-    public func tint(in appearance: Appearance) -> Chroma
+    func tint(in appearance: Appearance) -> Chroma
     {
         appearance == .dark ? darkTint : lightTint
     }
@@ -56,7 +56,7 @@ public struct Preset: Sendable, Identifiable
 
 extension Preset: CustomStringConvertible
 {
-    public var description: String
+    var description: String
     {
         title
     }

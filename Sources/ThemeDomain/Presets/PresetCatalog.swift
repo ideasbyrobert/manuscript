@@ -1,6 +1,6 @@
-public enum PresetCatalog
+enum PresetCatalog
 {
-    public static let all: [Preset] =
+    static let all: [Preset] =
     [
         .standard,
         .sakura,
@@ -13,12 +13,12 @@ public enum PresetCatalog
         .emerald
     ]
 
-    public static var identifiers: [String]
+    static var identifiers: [String]
     {
         all.map(\.id)
     }
 
-    public static func named(_ wanted: String) -> Preset?
+    static func named(_ wanted: String) -> Preset?
     {
         all.first
         {

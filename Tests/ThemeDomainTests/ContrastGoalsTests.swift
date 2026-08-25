@@ -1,6 +1,6 @@
-import Pigment
 import Testing
 
+@testable import Pigment
 @testable import ThemeDomain
 
 @Suite("What each role must reach")

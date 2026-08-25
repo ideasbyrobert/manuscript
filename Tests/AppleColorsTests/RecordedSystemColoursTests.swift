@@ -1,7 +1,7 @@
-import Pigment
 import Testing
 
 @testable import AppleColors
+@testable import Pigment
 
 @Suite("The recorded swatches")
 struct RecordedSystemColoursTests

@@ -1,11 +1,11 @@
 import AppKit
 import Pigment
 
-public struct AppKitSystemColours: SystemColourSource
+struct AppKitSystemColours: SystemColourSource
 {
-    public init() {}
+    init() {}
 
-    public func colour(
+    func colour(
         _ colour: SystemColour,
         in appearance: Appearance) -> SRGB
     {

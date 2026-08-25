@@ -1,8 +1,8 @@
-public struct Luminance: Sendable
+struct Luminance: Sendable
 {
-    public let value: Double
+    let value: Double
 
-    public init(_ colour: SRGB)
+    init(_ colour: SRGB)
     {
         let linear = LinearRGB(colour)
         value = 0.2126 * linear.red

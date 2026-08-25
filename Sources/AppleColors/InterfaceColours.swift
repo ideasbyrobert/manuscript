@@ -1,10 +1,10 @@
 import Pigment
 
-public enum InterfaceColours
+package enum InterfaceColours
 {
-    public static let accent = SRGB(hexNotation: "#007AFF")!
+    package static let accent = SRGB(hexNotation: "#007AFF")!
 
-    public static func selection(in appearance: Appearance) -> SRGB
+    package static func selection(in appearance: Appearance) -> SRGB
     {
         switch appearance
         {

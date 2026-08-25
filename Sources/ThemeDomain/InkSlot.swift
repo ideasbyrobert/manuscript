@@ -1,4 +1,4 @@
-public enum InkSlot: String, CaseIterable, Sendable
+enum InkSlot: String, CaseIterable, Sendable
 {
     case keyword
     case type

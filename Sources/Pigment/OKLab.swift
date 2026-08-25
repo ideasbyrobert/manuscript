@@ -1,19 +1,19 @@
 import Foundation
 
-public struct OKLab: Hashable, Sendable
+struct OKLab: Hashable, Sendable
 {
-    public let lightness: Double
-    public let a: Double
-    public let b: Double
+    package let lightness: Double
+    let a: Double
+    let b: Double
 
-    public init(lightness: Double, a: Double, b: Double)
+    init(lightness: Double, a: Double, b: Double)
     {
         self.lightness = lightness
         self.a = a
         self.b = b
     }
 
-    public init(_ colour: SRGB)
+    init(_ colour: SRGB)
     {
         let linear = LinearRGB(colour)
         let long = Self.cubeRoot(
@@ -40,7 +40,7 @@ public struct OKLab: Hashable, Sendable
                 - 0.8086757660 * short)
     }
 
-    public var srgb: SRGB
+    package var srgb: SRGB
     {
         let long = pow(lightness + 0.3963377774 * a + 0.2158037573 * b, 3)
         let medium = pow(lightness - 0.1055613458 * a - 0.0638541728 * b, 3)
@@ -57,7 +57,7 @@ public struct OKLab: Hashable, Sendable
                 + 1.7076147010 * short).encoded
     }
 
-    public func blended(towards other: OKLab, by fraction: Double) -> OKLab
+    func blended(towards other: OKLab, by fraction: Double) -> OKLab
     {
         OKLab(
             lightness: lightness + (other.lightness - lightness) * fraction,

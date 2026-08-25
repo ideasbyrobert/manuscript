@@ -1,7 +1,7 @@
 import AppleColors
 import Pigment
 
-public struct PaletteResolver
+struct PaletteResolver
 {
     private let preset: Preset
     private let appearance: Appearance
@@ -11,7 +11,7 @@ public struct PaletteResolver
     private let ground: SRGB
     private let solver: LightnessSolver
 
-    public init(
+    init(
         preset: Preset,
         appearance: Appearance,
         systemColours: any SystemColourSource = RecordedSystemColours.macOS27)
@@ -28,7 +28,7 @@ public struct PaletteResolver
         solver = LightnessSolver(ground: ground)
     }
 
-    public func resolve() -> Palette
+    func resolve() -> Palette
     {
         var swatches: [PaletteName: SRGB] = [:]
         for group in [surfaces(), neutrals(), syntax(), statuses(), furniture()]

@@ -1,6 +1,7 @@
-import AppleColors
 import Testing
 
+@testable import AppleColors
+@testable import Pigment
 @testable import ThemeDomain
 
 @Suite("Where the ground sits")

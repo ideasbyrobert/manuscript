@@ -1,4 +1,4 @@
-public enum PaletteName: String, CaseIterable, Sendable
+enum PaletteName: String, CaseIterable, Sendable
 {
     case background
     case raisedBackground

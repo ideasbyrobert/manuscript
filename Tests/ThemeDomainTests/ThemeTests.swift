@@ -1,7 +1,7 @@
-import AppleColors
-import Pigment
 import Testing
 
+@testable import AppleColors
+@testable import Pigment
 @testable import ThemeDomain
 
 @Suite("Every theme resolves completely")

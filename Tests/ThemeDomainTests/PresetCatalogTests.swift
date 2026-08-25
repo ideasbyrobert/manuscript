@@ -1,6 +1,6 @@
-import AppleColors
 import Testing
 
+@testable import AppleColors
 @testable import ThemeDomain
 
 @Suite("The catalogue of presets")

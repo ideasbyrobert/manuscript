@@ -1,19 +1,19 @@
 import Foundation
 
-public struct OKLCh: Hashable, Sendable
+package struct OKLCh: Hashable, Sendable
 {
-    public let lightness: Lightness
-    public let chroma: Chroma
-    public let hue: Hue
+    package let lightness: Lightness
+    package let chroma: Chroma
+    package let hue: Hue
 
-    public init(lightness: Lightness, chroma: Chroma, hue: Hue)
+    package init(lightness: Lightness, chroma: Chroma, hue: Hue)
     {
         self.lightness = lightness
         self.chroma = chroma
         self.hue = hue
     }
 
-    public init(_ colour: SRGB)
+    package init(_ colour: SRGB)
     {
         let lab = OKLab(colour)
         self.init(
@@ -22,7 +22,7 @@ public struct OKLCh: Hashable, Sendable
             hue: Hue(degrees: atan2(lab.b, lab.a) * 180 / .pi))
     }
 
-    public init?(hexNotation: String)
+    package init?(hexNotation: String)
     {
         guard let colour = SRGB(hexNotation: hexNotation) else
         {
@@ -31,7 +31,7 @@ public struct OKLCh: Hashable, Sendable
         self.init(colour)
     }
 
-    public var unclamped: SRGB
+    var unclamped: SRGB
     {
         OKLab(
             lightness: lightness.value,
@@ -39,22 +39,22 @@ public struct OKLCh: Hashable, Sendable
             b: chroma.value * sin(hue.radians)).srgb
     }
 
-    public var srgb: SRGB
+    package var srgb: SRGB
     {
         Gamut.sRGB.clamp(self).unclamped.clipped
     }
 
-    public var hexNotation: String
+    var hexNotation: String
     {
         srgb.hexNotation
     }
 
-    public func withLightness(_ replacement: Lightness) -> OKLCh
+    package func withLightness(_ replacement: Lightness) -> OKLCh
     {
         OKLCh(lightness: replacement, chroma: chroma, hue: hue)
     }
 
-    public func withChroma(_ replacement: Chroma) -> OKLCh
+    func withChroma(_ replacement: Chroma) -> OKLCh
     {
         OKLCh(lightness: lightness, chroma: replacement, hue: hue)
     }

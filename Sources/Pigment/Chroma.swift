@@ -1,25 +1,25 @@
-public struct Chroma: Hashable, Comparable, Sendable
+package struct Chroma: Hashable, Comparable, Sendable
 {
-    public static let none = Chroma(0)
+    static let none = Chroma(0)
 
-    public let value: Double
+    let value: Double
 
-    public init(_ value: Double)
+    package init(_ value: Double)
     {
         self.value = value.isNaN ? 0 : max(value, 0)
     }
 
-    public func scaled(by factor: Double) -> Chroma
+    package func scaled(by factor: Double) -> Chroma
     {
         Chroma(value * factor)
     }
 
-    public func capped(at ceiling: Double) -> Chroma
+    package func capped(at ceiling: Double) -> Chroma
     {
         Chroma(min(value, ceiling))
     }
 
-    public static func < (one: Chroma, other: Chroma) -> Bool
+    package static func < (one: Chroma, other: Chroma) -> Bool
     {
         one.value < other.value
     }

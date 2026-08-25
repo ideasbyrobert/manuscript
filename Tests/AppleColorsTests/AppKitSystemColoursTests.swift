@@ -1,7 +1,7 @@
-import Pigment
 import Testing
 
 @testable import AppleColors
+@testable import Pigment
 
 @Suite("Reading the running system", .serialized)
 struct AppKitSystemColoursTests

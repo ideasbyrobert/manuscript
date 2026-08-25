@@ -2,7 +2,7 @@ import AppleColors
 
 extension Preset
 {
-    public static let coralReef = Preset(
+    static let coralReef = Preset(
         id: "coral-reef",
         title: "Coral Reef",
         tintHue: 192,

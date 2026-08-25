@@ -1,19 +1,19 @@
 import Foundation
 
-public struct SRGB: Hashable, Sendable, CustomStringConvertible
+package struct SRGB: Hashable, Sendable, CustomStringConvertible
 {
-    public let red: Double
-    public let green: Double
-    public let blue: Double
+    package let red: Double
+    package let green: Double
+    package let blue: Double
 
-    public init(red: Double, green: Double, blue: Double)
+    package init(red: Double, green: Double, blue: Double)
     {
         self.red = red
         self.green = green
         self.blue = blue
     }
 
-    public init?(hexNotation: String)
+    package init?(hexNotation: String)
     {
         var digits = Substring(hexNotation)
         if digits.hasPrefix("#")
@@ -30,7 +30,7 @@ public struct SRGB: Hashable, Sendable, CustomStringConvertible
             blue: Double(packed & 0xFF) / 255)
     }
 
-    public var hexNotation: String
+    package var hexNotation: String
     {
         let bounded = clipped
         return String(
@@ -40,7 +40,7 @@ public struct SRGB: Hashable, Sendable, CustomStringConvertible
             bounded.channel(bounded.blue))
     }
 
-    public var clipped: SRGB
+    var clipped: SRGB
     {
         SRGB(
             red: confine(red),
@@ -48,17 +48,17 @@ public struct SRGB: Hashable, Sendable, CustomStringConvertible
             blue: confine(blue))
     }
 
-    public var isWithinGamut: Bool
+    var isWithinGamut: Bool
     {
         [red, green, blue].allSatisfy { $0 >= 0 && $0 <= 1 }
     }
 
-    public func isWithinGamut(tolerating slack: Double) -> Bool
+    func isWithinGamut(tolerating slack: Double) -> Bool
     {
         [red, green, blue].allSatisfy { $0 >= -slack && $0 <= 1 + slack }
     }
 
-    public var description: String
+    package var description: String
     {
         hexNotation
     }

@@ -1,7 +1,7 @@
-import Pigment
 import Testing
 
 @testable import AppleColors
+@testable import Pigment
 
 @Suite("The colours the system reserves for itself")
 struct InterfaceColoursTests

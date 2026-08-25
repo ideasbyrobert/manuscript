@@ -1,4 +1,4 @@
-public enum SystemColour: String, CaseIterable, Sendable
+package enum SystemColour: String, CaseIterable, Sendable
 {
     case red
     case orange

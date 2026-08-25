@@ -1,8 +1,8 @@
 import Pigment
 
-public struct RecordedSystemColours: SystemColourSource
+package struct RecordedSystemColours: SystemColourSource
 {
-    public static let macOS27 = RecordedSystemColours(
+    package static let macOS27 = RecordedSystemColours(
         light:
         [
             .red: "#FF383C",
@@ -38,7 +38,7 @@ public struct RecordedSystemColours: SystemColourSource
 
     private let swatches: [Appearance: [SystemColour: SRGB]]
 
-    public init(
+    init(
         light: [SystemColour: String],
         dark: [SystemColour: String])
     {
@@ -49,7 +49,7 @@ public struct RecordedSystemColours: SystemColourSource
         ]
     }
 
-    public func colour(
+    package func colour(
         _ colour: SystemColour,
         in appearance: Appearance) -> SRGB
     {

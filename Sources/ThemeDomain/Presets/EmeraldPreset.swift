@@ -2,7 +2,7 @@ import AppleColors
 
 extension Preset
 {
-    public static let emerald = Preset(
+    static let emerald = Preset(
         id: "emerald",
         title: "Emerald",
         tintHue: 148,

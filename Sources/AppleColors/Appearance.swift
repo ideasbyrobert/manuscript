@@ -1,14 +1,14 @@
-public enum Appearance: String, CaseIterable, Sendable
+package enum Appearance: String, CaseIterable, Sendable
 {
     case light
     case dark
 
-    public var title: String
+    package var title: String
     {
         rawValue.prefix(1).uppercased() + rawValue.dropFirst()
     }
 
-    public var opposite: Appearance
+    var opposite: Appearance
     {
         self == .light ? .dark : .light
     }

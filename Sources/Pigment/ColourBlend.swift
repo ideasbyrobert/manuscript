@@ -1,6 +1,6 @@
-public enum ColourBlend
+package enum ColourBlend
 {
-    public static func of(
+    package static func of(
         _ one: SRGB,
         towards other: SRGB,
         by fraction: Double) -> SRGB

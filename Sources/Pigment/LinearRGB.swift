@@ -1,19 +1,19 @@
 import Foundation
 
-public struct LinearRGB: Hashable, Sendable
+struct LinearRGB: Hashable, Sendable
 {
-    public let red: Double
-    public let green: Double
-    public let blue: Double
+    let red: Double
+    let green: Double
+    let blue: Double
 
-    public init(red: Double, green: Double, blue: Double)
+    init(red: Double, green: Double, blue: Double)
     {
         self.red = red
         self.green = green
         self.blue = blue
     }
 
-    public init(_ encoded: SRGB)
+    init(_ encoded: SRGB)
     {
         self.init(
             red: Self.expanded(encoded.red),
@@ -21,7 +21,7 @@ public struct LinearRGB: Hashable, Sendable
             blue: Self.expanded(encoded.blue))
     }
 
-    public var encoded: SRGB
+    var encoded: SRGB
     {
         SRGB(
             red: Self.compressed(red),

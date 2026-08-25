@@ -1,4 +1,4 @@
-public struct LightnessSolver: Sendable
+package struct LightnessSolver: Sendable
 {
     private static let refinements = 40
 
@@ -6,14 +6,14 @@ public struct LightnessSolver: Sendable
     private let groundLightness: Lightness
     private let groundIsDark: Bool
 
-    public init(ground: SRGB)
+    package init(ground: SRGB)
     {
         self.ground = ground
         groundLightness = OKLCh(ground).lightness
         groundIsDark = Luminance(ground).value < 0.2
     }
 
-    public func lightnessReaching(
+    package func lightnessReaching(
         _ target: ContrastRatio,
         hue: Hue,
         chroma: Chroma) -> Lightness

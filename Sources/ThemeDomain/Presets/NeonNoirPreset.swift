@@ -2,7 +2,7 @@ import AppleColors
 
 extension Preset
 {
-    public static let neonNoir = Preset(
+    static let neonNoir = Preset(
         id: "neon-noir",
         title: "Neon Noir",
         tintHue: 302,

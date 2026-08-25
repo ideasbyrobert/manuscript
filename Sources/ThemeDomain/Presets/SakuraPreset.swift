@@ -2,7 +2,7 @@ import AppleColors
 
 extension Preset
 {
-    public static let sakura = Preset(
+    static let sakura = Preset(
         id: "sakura",
         title: "Sakura",
         tintHue: 340,

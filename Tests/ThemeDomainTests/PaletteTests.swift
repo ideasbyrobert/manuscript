@@ -1,6 +1,6 @@
-import Pigment
 import Testing
 
+@testable import Pigment
 @testable import ThemeDomain
 
 @Suite("A complete palette")
