@@ -14,6 +14,8 @@ let package = Package(
         .executableTarget(
             name: "preview",
             dependencies: ["Specimen", "ThemeDomain"]),
+        .target(name: "Cascade"),
+        .testTarget(name: "CascadeTests", dependencies: ["Cascade"]),
         .target(name: "Typography"),
         .target(
             name: "Specimen",
