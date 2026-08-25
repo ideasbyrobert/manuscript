@@ -1,11 +1,11 @@
 import AppleColors
 import Pigment
 
-struct Theme: Sendable
+package struct Theme: Sendable
 {
     let preset: Preset
     let appearance: Appearance
-    let palette: Palette
+    package let palette: Palette
 
     init(
         preset: Preset,
@@ -49,7 +49,7 @@ struct Theme: Sendable
 
 extension Theme: CustomStringConvertible
 {
-    var description: String
+    package var description: String
     {
         identifier
     }

@@ -1,6 +1,6 @@
 import Pigment
 
-struct Palette: Sendable
+package struct Palette: Sendable
 {
     private let swatches: [PaletteName: SRGB]
 
@@ -11,12 +11,12 @@ struct Palette: Sendable
         self.swatches = swatches.mapValues { $0.quantised }
     }
 
-    subscript(name: PaletteName) -> SRGB
+    package subscript(name: PaletteName) -> SRGB
     {
         swatches[name]!
     }
 
-    func notation(_ name: PaletteName) -> String
+    package func notation(_ name: PaletteName) -> String
     {
         self[name].hexNotation
     }

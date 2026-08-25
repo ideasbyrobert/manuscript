@@ -1,4 +1,4 @@
-enum PaletteName: String, CaseIterable, Sendable
+package enum PaletteName: String, CaseIterable, Sendable
 {
     case background
     case raisedBackground

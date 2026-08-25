@@ -11,6 +11,12 @@ let package = Package(
     targets: [
         .executableTarget(name: "lint"),
         .target(name: "Typography"),
+        .target(
+            name: "Specimen",
+            dependencies: ["ThemeDomain", "Typography", "AppleColors"]),
+        .testTarget(
+            name: "SpecimenTests",
+            dependencies: ["Specimen", "ThemeDomain"]),
         .testTarget(name: "TypographyTests", dependencies: ["Typography"]),
         .target(name: "Pigment"),
         .testTarget(name: "PigmentTests", dependencies: ["Pigment"]),
