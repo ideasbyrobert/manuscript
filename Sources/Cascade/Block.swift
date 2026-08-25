@@ -3,7 +3,7 @@ package indirect enum Block: Sendable
     case rule(Rule)
     case when(MediaCondition, [Block])
 
-    package var important: Block
+    var important: Block
     {
         switch self
         {
@@ -14,7 +14,7 @@ package indirect enum Block: Sendable
         }
     }
 
-    package var text: String
+    var text: String
     {
         switch self
         {

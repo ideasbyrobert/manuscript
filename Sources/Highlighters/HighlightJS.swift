@@ -1,9 +1,9 @@
 import Cascade
 import ThemeDomain
 
-package enum HighlightJS
+enum HighlightJS
 {
-    package static let highlighter = Highlighter(
+    static let highlighter = Highlighter(
         name: "highlight.js",
         containers: [
             "pre.hljs",

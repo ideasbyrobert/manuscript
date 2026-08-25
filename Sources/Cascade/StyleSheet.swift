@@ -1,6 +1,6 @@
 package struct StyleSheet: Sendable
 {
-    package let blocks: [Block]
+    private let blocks: [Block]
 
     package init(_ blocks: [Block])
     {

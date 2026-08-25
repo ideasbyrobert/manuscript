@@ -1,9 +1,9 @@
 import Cascade
 import ThemeDomain
 
-package enum Tokens
+enum Tokens
 {
-    package static func rule(for theme: Theme) -> Rule
+    static func rule(for theme: Theme) -> Rule
     {
         Rule(
             [":root"],

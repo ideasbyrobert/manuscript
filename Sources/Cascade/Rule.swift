@@ -1,7 +1,7 @@
-package struct Rule: Sendable, Equatable
+package struct Rule: Sendable
 {
-    package let selectors: [String]
-    package let declarations: [Declaration]
+    let selectors: [String]
+    let declarations: [Declaration]
 
     package init(
         _ selectors: [String],
@@ -11,12 +11,12 @@ package struct Rule: Sendable, Equatable
         self.declarations = declarations
     }
 
-    package var important: Rule
+    var important: Rule
     {
         Rule(selectors, declarations.map { $0.important })
     }
 
-    package var text: String
+    var text: String
     {
         guard !selectors.isEmpty, !declarations.isEmpty else
         {

@@ -2,9 +2,9 @@ import Cascade
 import Highlighters
 import ThemeDomain
 
-package enum CodeSurface
+enum CodeSurface
 {
-    package static var blocks: [Block]
+    static var blocks: [Block]
     {
         var rules: [Rule] = []
         for highlighter in HighlighterCatalog.all

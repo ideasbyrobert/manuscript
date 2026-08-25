@@ -1,4 +1,4 @@
-package enum Emphasis: Sendable, Equatable
+package enum Emphasis: Sendable
 {
     case none
     case bold

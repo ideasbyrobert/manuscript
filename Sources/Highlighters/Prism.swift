@@ -1,9 +1,9 @@
 import Cascade
 import ThemeDomain
 
-package enum Prism
+enum Prism
 {
-    package static let highlighter = Highlighter(
+    static let highlighter = Highlighter(
         name: "Prism",
         containers: [
             "pre[class*=\"language-\"]",

@@ -2,7 +2,7 @@ import Cascade
 
 package struct Highlighter: Sendable
 {
-    package let name: String
+    let name: String
     package let containers: [String]
     package let bindings: [TokenBinding]
     package let resets: [Rule]

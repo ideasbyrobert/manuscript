@@ -3,8 +3,8 @@ import ThemeDomain
 
 package struct ThemePair: Sendable
 {
-    package let light: Theme
-    package let dark: Theme
+    let light: Theme
+    let dark: Theme
 
     package init?(preset: String, in themes: [Theme])
     {

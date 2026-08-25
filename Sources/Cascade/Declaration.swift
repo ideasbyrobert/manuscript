@@ -1,8 +1,8 @@
-package struct Declaration: Sendable, Equatable
+package struct Declaration: Sendable
 {
-    package let property: String
-    package let value: String
-    package let isImportant: Bool
+    let property: String
+    let value: String
+    let isImportant: Bool
 
     package init(
         _ property: String,
@@ -14,12 +14,12 @@ package struct Declaration: Sendable, Equatable
         self.isImportant = isImportant
     }
 
-    package var important: Declaration
+    var important: Declaration
     {
         Declaration(property, value, isImportant: true)
     }
 
-    package var text: String
+    var text: String
     {
         let mark = isImportant ? " !important" : ""
         return "\(property): \(value)\(mark);"

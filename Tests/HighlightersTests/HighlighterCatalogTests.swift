@@ -1,6 +1,6 @@
-import Cascade
 import Testing
 
+@testable import Cascade
 @testable import Highlighters
 
 @Suite("What the web calls its tokens")

@@ -1,5 +1,5 @@
-package enum FontStack
+enum FontStack
 {
-    package static let mono =
+    static let mono =
         "ui-monospace, SFMono-Regular, \"SF Mono\", Menlo, monospace"
 }
