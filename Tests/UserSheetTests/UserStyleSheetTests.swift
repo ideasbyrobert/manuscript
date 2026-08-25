@@ -47,10 +47,14 @@ struct UserStyleSheetTests
           arguments: UserStyleSheetTests.pairs)
     func bothAppearancesAgree(pair: ThemePair)
     {
-        let light = Tokens.rule(for: pair.light, on: [":root"]).declarations
-        let dark = Tokens.rule(for: pair.dark, on: [":root"]).declarations
+        let light = Tokens.rule(
+            for: pair.light, on: [":root"], roles: CodeSurface.roles)
+            .declarations
+        let dark = Tokens.rule(
+            for: pair.dark, on: [":root"], roles: CodeSurface.roles)
+            .declarations
         #expect(light.map { $0.property } == dark.map { $0.property })
-        #expect(light.count == PaletteName.allCases.count)
+        #expect(light.count == CodeSurface.roles.count)
     }
 
     @Test("a sheet that paints nothing is not a sheet",
@@ -89,7 +93,7 @@ struct UserStyleSheetTests
     func tokensCarryTheColourTheyName(pair: ThemePair)
     {
         let sheet = text(pair)
-        for role in PaletteName.allCases
+        for role in CodeSurface.roles
         {
             let solved = pair.light.palette.notation(role)
             let stated = "--manuscript-\(role.rawValue): \(solved)"

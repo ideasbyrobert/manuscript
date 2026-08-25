@@ -3,11 +3,14 @@ import ThemeDomain
 
 enum Tokens
 {
-    static func rule(for theme: Theme, on selectors: [String]) -> Rule
+    static func rule(
+        for theme: Theme,
+        on selectors: [String],
+        roles: [PaletteName]) -> Rule
     {
         Rule(
             selectors,
-            PaletteName.allCases.map
+            roles.map
             {
                 Declaration(TokenName.of($0), theme.palette.notation($0))
             })

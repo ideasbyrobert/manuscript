@@ -4,6 +4,16 @@ import ThemeDomain
 
 enum CodeSurface
 {
+    static let roles: [PaletteName] = PaletteName.allCases.filter
+    {
+        consumed.contains($0)
+    }
+
+    private static let consumed: Set<PaletteName> = Set(
+        HighlighterCatalog.all.flatMap { $0.bindings.map { $0.role } }
+            + PrettyLights.bridges.map { $0.role }
+            + [.insetBackground, .text, .keyword])
+
     static var blocks: [Block]
     {
         var rules: [Rule] = []

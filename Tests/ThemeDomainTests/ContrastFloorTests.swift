@@ -80,6 +80,21 @@ struct ContrastFloorTests
         }
     }
 
+    @Test("floors hold on the inset ground a web page is painted with",
+          arguments: Theme.catalogue())
+    func floorsHoldOnTheInset(theme: Theme)
+    {
+        for (name, floor) in Self.floors
+        {
+            let measured = theme.palette.contrast(
+                name,
+                against: .insetBackground)
+            #expect(
+                measured >= floor,
+                "\(theme) \(name) on inset is \(measured.value)")
+        }
+    }
+
     @Test("furniture stays quiet", arguments: Theme.catalogue())
     func furnitureRecedes(theme: Theme)
     {

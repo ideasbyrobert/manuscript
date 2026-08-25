@@ -64,4 +64,17 @@ struct TokenNameTests
             rest = rest[close...]
         }
     }
+
+    @Test("every token the sheet defines is one some rule asks for",
+          arguments: ThemePair.all(in: Theme.catalogue()))
+    func everyDefinitionIsReferenced(pair: ThemePair)
+    {
+        let sheet = UserStyleSheet.sheet(for: pair).text
+        for role in CodeSurface.roles
+        {
+            #expect(
+                sheet.contains(TokenName.reference(role)),
+                "\(role) is declared on every page and read by nothing")
+        }
+    }
 }
