@@ -22,7 +22,7 @@ let package = Package(
             dependencies: ["Cascade", "ThemeDomain"]),
         .testTarget(
             name: "HighlightersTests",
-            dependencies: ["Highlighters", "ThemeDomain"]),
+            dependencies: ["Highlighters", "Cascade", "ThemeDomain"]),
         .target(
             name: "UserSheet",
             dependencies: [

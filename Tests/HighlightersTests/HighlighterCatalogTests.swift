@@ -1,3 +1,4 @@
+import Cascade
 import Testing
 
 @testable import Highlighters
@@ -97,5 +98,64 @@ struct HighlighterCatalogTests
             $0 == " " || $0 == ">"
         }
         return String(parts.last ?? "")
+    }
+
+    @Test("every selector closes what it opens")
+    func everySelectorParses()
+    {
+        for highlighter in HighlighterCatalog.all
+        {
+            for selector in Self.selectors(of: highlighter)
+            {
+                #expect(
+                    Self.closes(selector),
+                    "\(highlighter.name) loses a rule to \(selector)")
+            }
+        }
+    }
+
+    private static func selectors(
+        of highlighter: Highlighter) -> [String]
+    {
+        highlighter.containers
+            + highlighter.bindings.flatMap { $0.selectors }
+            + highlighter.resets.flatMap { $0.selectors }
+    }
+
+    private static func closes(_ selector: String) -> Bool
+    {
+        var quoted = false
+        var brackets = 0
+        var parentheses = 0
+        for character in selector
+        {
+            if character == "\""
+            {
+                quoted.toggle()
+                continue
+            }
+            if quoted
+            {
+                continue
+            }
+            switch character
+            {
+            case "[":
+                brackets += 1
+            case "]":
+                brackets -= 1
+            case "(":
+                parentheses += 1
+            case ")":
+                parentheses -= 1
+            default:
+                break
+            }
+            if brackets < 0 || parentheses < 0
+            {
+                return false
+            }
+        }
+        return !quoted && brackets == 0 && parentheses == 0
     }
 }
