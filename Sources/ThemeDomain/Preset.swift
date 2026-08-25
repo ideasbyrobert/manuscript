@@ -34,7 +34,7 @@ struct Preset: Sendable, Identifiable
 
     func ink(for slot: InkSlot) -> SystemColour
     {
-        inks[slot] ?? .gray
+        inks[slot]!
     }
 
     func goal(for slot: InkSlot) -> ContrastGoal
