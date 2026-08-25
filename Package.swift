@@ -45,6 +45,8 @@ let package = Package(
             name: "SpecimenTests",
             dependencies: ["Specimen", "ThemeDomain"]),
         .testTarget(name: "TypographyTests", dependencies: ["Typography"]),
+        .target(name: "Gate"),
+        .testTarget(name: "GateTests", dependencies: ["Gate"]),
         .target(name: "Adapter"),
         .executableTarget(name: "mock-adapter", dependencies: ["Adapter"]),
         .testTarget(
