@@ -12,6 +12,7 @@ let package = Package(
     ],
     targets: [
         .executableTarget(name: "lint"),
+        .testTarget(name: "lintTests", dependencies: ["lint"]),
         .executableTarget(
             name: "preview",
             dependencies: ["Specimen", "ThemeDomain"]),

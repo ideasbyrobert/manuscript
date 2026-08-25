@@ -19,11 +19,11 @@ enum BlockKeyword
 
     static func opens(_ code: String) -> Bool
     {
-        let body = withoutModifiers(code)
+        let body = stripped(code)
         return all.contains { begins(body, with: $0) }
     }
 
-    private static func withoutModifiers(_ code: String) -> String
+    static func stripped(_ code: String) -> String
     {
         var body = Substring(code.drop { $0 == " " })
         var stripping = true
