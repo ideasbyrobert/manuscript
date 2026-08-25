@@ -4,7 +4,8 @@ package enum Pygments
 {
     package static let highlighter = Highlighter(
         name: "Pygments",
-        containers: scoped(["pre", "code"]) + [".highlight", ".chroma"],
+        containers: scoped(["pre", "code"])
+            + wrappers.map { "pre" + $0 },
         bindings: bindings)
 
     private static let wrappers = [".highlight", ".chroma", ".codehilite"]

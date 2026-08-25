@@ -7,6 +7,7 @@ package enum Prism
         name: "Prism",
         containers: [
             "pre[class*=\"language-\"]",
+            "pre:has(> code[class*=\"language-\"])",
             "code[class*=\"language-\"]",
             "pre[class*=\"brush:\"]"
         ],
