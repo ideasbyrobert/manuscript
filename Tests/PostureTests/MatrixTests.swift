@@ -128,4 +128,97 @@ struct MatrixTests
         #expect(report["documents"]?.answer == .denied)
         #expect(report["documents"]?.errno == EPERM)
     }
+
+    private func housed(
+        _ probe: Probe,
+        _ arguments: [String],
+        helpers: [URL] = [],
+        within limit: Duration = .seconds(60),
+        in fixture: Fixture) async throws -> Report
+    {
+        let built = try #require(Products.postureProbe)
+        let posture = Posture.adhocHoused(probe.entitlements)
+        let runnable = try posture.stand(
+            built,
+            helpers: helpers,
+            in: fixture.scratch)
+        return try await Run.probe(runnable, probe, arguments, within: limit)
+    }
+
+    @Test("housed, a container-file bookmark resolves; an outside one does not")
+    func bookmarkInsideAndOut() async throws
+    {
+        let fixture = try Fixture()
+        defer
+        {
+            fixture.remove()
+        }
+        let inside = try await housed(.bookmark, ["held"], in: fixture)
+        #expect(inside["read"]?.answer == .permitted, "\(inside.json)")
+        let outside = try await housed(
+            .bookmark,
+            [fixture.outside.path],
+            in: fixture)
+        #expect(outside["mint"]?.answer == .denied, "\(outside.json)")
+    }
+
+    @Test("housed with network, the page answers 200 through an isolated world")
+    func webAnswersInsideTheSandbox() async throws
+    {
+        let fixture = try Fixture()
+        defer
+        {
+            fixture.remove()
+        }
+        let address = "https://captive.apple.com/hotspot-detect.html"
+        let report = try await housed(
+            .web,
+            [address],
+            within: .seconds(90),
+            in: fixture)
+        #expect(report["load"]?.answer == .permitted, "\(report.json)")
+        #expect(report["load"]?.code == 200)
+        #expect(report["world"]?.answer == .permitted, "\(report.json)")
+    }
+
+    @Test("housed, lldb-dap is exec'd and answers, and the launch is refused")
+    func debuggerInsideTheSandbox() async throws
+    {
+        let fixture = try Fixture()
+        defer
+        {
+            fixture.remove()
+        }
+        let source = fixture.scratch.appendingPathComponent("h.swift")
+        try Data("print(\"hi\")\n".utf8).write(to: source)
+        let program = fixture.scratch.appendingPathComponent("h")
+        let build = Process()
+        build.executableURL = URL(fileURLWithPath: "/usr/bin/xcrun")
+        build.arguments = ["swiftc", "-g", "-o", program.path, source.path]
+        try build.run()
+        build.waitUntilExit()
+        let lldb = URL(
+            fileURLWithPath: "/Applications/Xcode-beta.app/Contents"
+                + "/Developer/usr/bin/lldb-dap")
+        let report = try await housed(
+            .debug,
+            [lldb.path, program.path],
+            helpers: [program],
+            within: .seconds(120),
+            in: fixture)
+        #expect(report["spawn"] != nil, "\(report.json)")
+    }
+
+    @Test("housed, a foreign global name is refused; the bundle's own is not")
+    func machInsideTheSandbox() async throws
+    {
+        let fixture = try Fixture()
+        defer
+        {
+            fixture.remove()
+        }
+        let report = try await housed(.mach, [], in: fixture)
+        #expect(report["global"]?.answer == .denied, "\(report.json)")
+        #expect(report["self"] != nil, "\(report.json)")
+    }
 }

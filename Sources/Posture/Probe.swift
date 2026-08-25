@@ -1,3 +1,4 @@
+import Foundation
 package enum Probe: String, CaseIterable, Codable, Sendable
 {
     case sandbox
@@ -33,8 +34,26 @@ package enum Probe: String, CaseIterable, Codable, Sendable
                 "argv": arguments.dropFirst().first ?? ""
             ]
             return Report(self, verdicts: Outside.measure(paths), facts: facts)
-        default:
-            return Report(self, verdicts: [], facts: facts)
+        case .bookmark:
+            let path = Bookmark.path(arguments.first ?? "")
+            return Report(self, verdicts: Bookmark.measure(path), facts: facts)
+        case .web:
+            let address = arguments.first ?? ""
+            let verdicts = await Page.measure(address, within: .seconds(60))
+            return Report(self, verdicts: verdicts, facts: facts)
+        case .debug:
+            let adapter = arguments.first ?? ""
+            let program = arguments.dropFirst().first ?? ""
+            let verdicts = await Debugger.measure(
+                adapter: adapter,
+                program: program)
+            return Report(self, verdicts: verdicts, facts: facts)
+        case .mach, .machClient:
+            let bundle = Bundle.main.bundleIdentifier
+            return Report(
+                self,
+                verdicts: Rendezvous.measure(bundleID: bundle),
+                facts: facts)
         }
     }
 }
