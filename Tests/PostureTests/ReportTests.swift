@@ -8,7 +8,8 @@ struct ReportTests
     @Test("a report is one line of JSON that decodes back to itself")
     func oneLine() throws
     {
-        let verdicts = [Verdict("x", .permitted), Verdict("y", .denied, errno: 1)]
+        let denied = Verdict("y", .denied, errno: 1)
+        let verdicts = [Verdict("x", .permitted), denied]
         let report = Report(.read, verdicts: verdicts, facts: ["HOME": "/x"])
         #expect(!report.json.contains("\n"))
         #expect(try Report.decode(report.json) == report)
