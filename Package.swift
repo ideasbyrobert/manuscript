@@ -6,10 +6,14 @@ let package = Package(
     name: "Manuscript",
     platforms: [.macOS(.v12)],
     products: [
-        .executable(name: "lint", targets: ["lint"])
+        .executable(name: "lint", targets: ["lint"]),
+        .executable(name: "preview", targets: ["preview"])
     ],
     targets: [
         .executableTarget(name: "lint"),
+        .executableTarget(
+            name: "preview",
+            dependencies: ["Specimen", "ThemeDomain"]),
         .target(name: "Typography"),
         .target(
             name: "Specimen",
