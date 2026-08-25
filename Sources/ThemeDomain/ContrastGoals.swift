@@ -38,6 +38,11 @@ enum ContrastGoals
     static let documentation = ContrastRatio(3.90)
     static let punctuation = ContrastRatio(6.80)
     static let operatorGlyph = ContrastRatio(8.20)
+    static let selection = ContrastRatio(1.30)
+    static let dimSelection = ContrastRatio(1.16)
+    static let matchingBracket = ContrastRatio(1.32)
+    static let searchHighlight = ContrastRatio(1.14)
+
     static let modeAccent = ContrastRatio(5.00)
     static let modeNormal = ContrastRatio(5.40)
     static let jumpLabel = ContrastRatio(5.00)

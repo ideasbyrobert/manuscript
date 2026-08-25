@@ -111,15 +111,18 @@ struct PaletteResolver
     private func furniture() -> [PaletteName: SRGB]
     {
         let base = InterfaceColours.selection(in: appearance)
-        let dark = appearance == .dark
         return [
-            .selection: blend(base, by: dark ? 0.34 : 0.22),
-            .dimSelection: blend(base, by: dark ? 0.62 : 0.55),
-            .matchingBracket: blend(base, by: dark ? 0.30 : 0.18),
+            .selection: blend(base, reaching: ContrastGoals.selection),
+            .dimSelection: blend(
+                base,
+                reaching: ContrastGoals.dimSelection),
+            .matchingBracket: blend(
+                base,
+                reaching: ContrastGoals.matchingBracket),
             .cursor: caret(),
             .searchHighlight: blend(
                 systemColours.colour(.yellow, in: appearance),
-                by: dark ? 0.72 : 0.62),
+                reaching: ContrastGoals.searchHighlight),
             .jumpLabel: ink(
                 .pink,
                 goal: ContrastGoal(ContrastGoals.jumpLabel, chromaFactor: 1)),
@@ -195,6 +198,30 @@ struct PaletteResolver
     private func blend(_ colour: SRGB, by fraction: Double) -> SRGB
     {
         ColourBlend.of(colour, towards: ground, by: fraction)
+    }
+
+    private func blend(
+        _ colour: SRGB,
+        reaching target: ContrastRatio) -> SRGB
+    {
+        var boldest = 0.0
+        var faintest = 1.0
+        for _ in 0 ..< 40
+        {
+            let middle = (boldest + faintest) / 2
+            let reached = ContrastRatio.between(
+                blend(colour, by: middle),
+                ground)
+            if reached > target
+            {
+                boldest = middle
+            }
+            else
+            {
+                faintest = middle
+            }
+        }
+        return blend(colour, by: (boldest + faintest) / 2)
     }
 
     private func caret() -> SRGB

@@ -45,6 +45,29 @@ struct ContrastFloorTests
         .ghostText: 1.8 ... 2.5
     ]
 
+    private static let grounds: [PaletteName] =
+    [
+        .background, .selection, .dimSelection, .matchingBracket,
+        .searchHighlight, .cursorLine, .cursorColumn
+    ]
+
+    @Test("ink stays readable on every ground it may sit on",
+          arguments: Theme.catalogue())
+    func floorsHoldOnEveryGround(theme: Theme)
+    {
+        for ground in Self.grounds
+        {
+            for name in [PaletteName.text, .keyword, .type, .string,
+                         .number, .comment]
+            {
+                let measured = theme.palette.contrast(name, against: ground)
+                #expect(
+                    measured >= 2.5,
+                    "\(theme) \(name) on \(ground) is \(measured)")
+            }
+        }
+    }
+
     @Test("readable roles clear their floor", arguments: Theme.catalogue())
     func floorsHold(theme: Theme)
     {
