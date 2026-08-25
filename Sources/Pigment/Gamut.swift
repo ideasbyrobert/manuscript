@@ -1,6 +1,6 @@
-struct Gamut: Sendable
+package struct Gamut: Sendable
 {
-    static let sRGB = Gamut()
+    package static let sRGB = Gamut()
 
     private static let refinements = 28
     private static let slack = 1e-4
@@ -8,6 +8,14 @@ struct Gamut: Sendable
     func contains(_ colour: OKLCh) -> Bool
     {
         colour.unclamped.isWithinGamut(tolerating: Self.slack)
+    }
+
+    package func widestChroma(at lightness: Lightness, hue: Hue) -> Chroma
+    {
+        clamp(OKLCh(
+            lightness: lightness,
+            chroma: Chroma(0.5),
+            hue: hue)).chroma
     }
 
     func clamp(_ colour: OKLCh) -> OKLCh

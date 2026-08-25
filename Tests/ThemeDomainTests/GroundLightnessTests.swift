@@ -14,12 +14,14 @@ struct GroundLightnessTests
         #expect(GroundLightness.of(.dark).value < 0.3)
     }
 
-    @Test("a dark ground carries more tint before it reads as coloured")
-    func darkToleratesMoreTint()
+    @Test("the tint ceiling is a share of what the gamut allows")
+    func ceilingIsAShare()
     {
-        #expect(
-            GroundLightness.tintCeiling(for: .dark)
-                > GroundLightness.tintCeiling(for: .light))
+        for appearance in Appearance.allCases
+        {
+            let share = GroundLightness.tintShare(for: appearance)
+            #expect(share > 0 && share < 1, "\(appearance)")
+        }
     }
 
     @Test("only brown is boosted, and only upward")

@@ -2,7 +2,7 @@ package struct Chroma: Hashable, Comparable, Sendable
 {
     static let none = Chroma(0)
 
-    let value: Double
+    package let value: Double
 
     package init(_ value: Double)
     {

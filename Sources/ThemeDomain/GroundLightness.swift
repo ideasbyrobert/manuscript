@@ -12,8 +12,8 @@ enum GroundLightness
         }
     }
 
-    static func tintCeiling(for appearance: Appearance) -> Double
+    static func tintShare(for appearance: Appearance) -> Double
     {
-        appearance == .dark ? 0.034 : 0.028
+        appearance == .dark ? 0.150 : 0.150
     }
 }

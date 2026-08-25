@@ -165,9 +165,16 @@ struct PaletteResolver
         _ target: ContrastRatio,
         tintedBy factor: Double) -> SRGB
     {
-        let chroma = tint
-            .scaled(by: factor)
-            .capped(at: GroundLightness.tintCeiling(for: appearance))
+        let wanted = tint.scaled(by: factor)
+        let provisional = solver.lightnessReaching(
+            target,
+            hue: preset.tintHue,
+            chroma: wanted)
+        let chroma = wanted.capped(
+            at: Gamut.sRGB
+                .widestChroma(at: provisional, hue: preset.tintHue)
+                .value
+                * GroundLightness.tintShare(for: appearance))
         let lightness = solver.lightnessReaching(
             target,
             hue: preset.tintHue,
