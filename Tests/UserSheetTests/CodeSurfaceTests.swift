@@ -56,4 +56,23 @@ struct CodeSurfaceTests
             && rule.declarations[0].property == "color"
             && rule.declarations[0].value == "inherit"
     }
+
+    @Test("a ground takes the surface, the image over it, the ink and the face",
+          arguments: HighlighterCatalog.all)
+    func aGroundCarriesEveryDeclarationItNeeds(highlighter: Highlighter)
+    {
+        let ground = Self.rules.first
+        {
+            $0.selectors == highlighter.containers
+        }
+        let properties = ground?.declarations.map { $0.property } ?? []
+        #expect(
+            properties == [
+                "background-color", "background-image", "color",
+                "font-family"],
+            "\(highlighter.name) grounds with \(properties)")
+        let image = ground?.declarations
+            .first { $0.property == "background-image" }
+        #expect(image?.value == "none")
+    }
 }

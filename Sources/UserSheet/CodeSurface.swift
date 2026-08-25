@@ -27,6 +27,7 @@ enum CodeSurface
                 Declaration(
                     "background-color",
                     TokenName.reference(.insetBackground)),
+                Declaration("background-image", "none"),
                 Declaration("color", TokenName.reference(.text)),
                 Declaration("font-family", FontStack.mono)
             ])
