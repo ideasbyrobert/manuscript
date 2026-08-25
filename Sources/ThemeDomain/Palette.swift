@@ -8,7 +8,7 @@ struct Palette: Sendable
     {
         let missing = Set(PaletteName.allCases).subtracting(swatches.keys)
         precondition(missing.isEmpty, "palette is missing \(missing)")
-        self.swatches = swatches
+        self.swatches = swatches.mapValues { $0.quantised }
     }
 
     subscript(name: PaletteName) -> SRGB

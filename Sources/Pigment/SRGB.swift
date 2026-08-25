@@ -40,6 +40,15 @@ package struct SRGB: Hashable, Sendable, CustomStringConvertible
             bounded.channel(bounded.blue))
     }
 
+    package var quantised: SRGB
+    {
+        let bounded = clipped
+        return SRGB(
+            red: Double(bounded.channel(bounded.red)) / 255,
+            green: Double(bounded.channel(bounded.green)) / 255,
+            blue: Double(bounded.channel(bounded.blue)) / 255)
+    }
+
     var clipped: SRGB
     {
         SRGB(
