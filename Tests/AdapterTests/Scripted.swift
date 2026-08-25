@@ -15,6 +15,7 @@ actor Scripted: Link
     private var waiting: [Int: CheckedContinuation<Message, any Error>] = [:]
     private var listening: [String: [CheckedContinuation<Message?, Never>]]
         = [:]
+    private var unclaimed: [String: [Message]] = [:]
 
     var commands: [String]
     {
@@ -49,7 +50,13 @@ actor Scripted: Link
 
     func once(_ event: String) async -> Message?
     {
-        await withCheckedContinuation
+        if var kept = unclaimed[event], !kept.isEmpty
+        {
+            let first = kept.removeFirst()
+            unclaimed[event] = kept
+            return first
+        }
+        return await withCheckedContinuation
         {
             listening[event, default: []].append($0)
         }
@@ -95,9 +102,16 @@ actor Scripted: Link
 
     func emit(_ event: String, body: JSON? = nil)
     {
-        for listener in listening.removeValue(forKey: event) ?? []
+        let message = Message.event(0, event, body: body)
+        guard let listeners = listening.removeValue(forKey: event),
+            !listeners.isEmpty else
         {
-            listener.resume(returning: .event(0, event, body: body))
+            unclaimed[event, default: []].append(message)
+            return
+        }
+        for listener in listeners
+        {
+            listener.resume(returning: message)
         }
     }
 

@@ -6,6 +6,7 @@ let environment = ProcessInfo.processInfo.environment
 let splitsFrames = environment["MOCK_SPLIT_FRAMES"] == "1"
 let onDisconnect = environment["MOCK_DISCONNECT"] ?? "exit"
 let initializedAfterStart = environment["MOCK_INITIALIZED"] == "after-start"
+let startsSlowly = environment["MOCK_START"] == "slow"
 if onDisconnect == "ignore-term"
 {
     signal(SIGTERM, SIG_IGN)
@@ -15,6 +16,19 @@ var seq = 1
 var buffer = Data()
 var initializedSent = false
 var startAcknowledged = false
+var askedBeforeInitialized = false
+var askedBeforeStartAcknowledged = false
+
+@MainActor
+func requestArrives(within milliseconds: Int32) -> Bool
+{
+    guard buffer.isEmpty else
+    {
+        return true
+    }
+    var standardInput = pollfd(fd: 0, events: Int16(POLLIN), revents: 0)
+    return poll(&standardInput, 1, milliseconds) > 0
+}
 
 @MainActor
 func emit(_ message: Message)
@@ -87,14 +101,19 @@ func handle(_ request: Message)
             initialized()
         }
     case "launch", "attach":
+        if startsSlowly
+        {
+            askedBeforeStartAcknowledged = requestArrives(within: 150)
+        }
         respond(request)
         startAcknowledged = true
         if initializedAfterStart
         {
+            askedBeforeInitialized = requestArrives(within: 150)
             initialized()
         }
     case "setBreakpoints":
-        guard initializedSent else
+        guard initializedSent, !askedBeforeInitialized else
         {
             respond(
                 request,
@@ -107,7 +126,7 @@ func handle(_ request: Message)
             request,
             body: ["breakpoints": [["verified": true, "line": line]]])
     case "configurationDone":
-        guard startAcknowledged else
+        guard startAcknowledged, !askedBeforeStartAcknowledged else
         {
             respond(
                 request,
@@ -160,8 +179,8 @@ while true
         switch Frame.parse(buffer)
         {
         case .message(let request, let consumed):
+            buffer = Data(buffer.dropFirst(consumed))
             handle(request)
-            buffer.removeFirst(consumed)
         case .incomplete:
             parsing = false
         case .corrupt:

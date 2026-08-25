@@ -35,6 +35,18 @@ struct LinkTests
         #expect(event?.event == "initialized")
     }
 
+    @Test("an event emitted before anyone waits is kept for the first waiter")
+    func earlyEventIsKept() async throws
+    {
+        let link = Scripted()
+        await link.emit("initialized")
+        let event = try await within(.seconds(2))
+        {
+            await link.once("initialized")
+        }
+        #expect(event?.event == "initialized")
+    }
+
     @Test("a session is a link, so the launch cannot tell them apart")
     func sessionIsALink()
     {
