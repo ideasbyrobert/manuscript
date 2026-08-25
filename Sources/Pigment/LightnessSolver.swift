@@ -4,13 +4,16 @@ package struct LightnessSolver: Sendable
 
     private let ground: SRGB
     private let groundLightness: Lightness
-    private let groundIsDark: Bool
+    private let inkGrowsLighter: Bool
 
     package init(ground: SRGB)
     {
         self.ground = ground
         groundLightness = OKLCh(ground).lightness
-        groundIsDark = Luminance(ground).value < 0.2
+        let luminance = Luminance(ground).value
+        let lightening = 1.05 / (luminance + 0.05)
+        let darkening = (luminance + 0.05) / 0.05
+        inkGrowsLighter = lightening >= darkening
     }
 
     package func lightnessReaching(
@@ -18,24 +21,28 @@ package struct LightnessSolver: Sendable
         hue: Hue,
         chroma: Chroma) -> Lightness
     {
-        var nearer = groundIsDark ? groundLightness : Lightness.darkest
-        var further = groundIsDark ? Lightness.lightest : groundLightness
+        let extreme = inkGrowsLighter
+            ? Lightness.lightest
+            : Lightness.darkest
+        precondition(
+            contrast(at: extreme, hue: hue, chroma: chroma) >= target,
+            "no lightness on this ground reaches \(target)")
 
+        var failing = groundLightness
+        var succeeding = extreme
         for _ in 0 ..< Self.refinements
         {
-            let candidate = Lightness.midpoint(nearer, further)
-            let reached = contrast(at: candidate, hue: hue, chroma: chroma)
-                >= target
-            if groundIsDark == reached
+            let candidate = Lightness.midpoint(failing, succeeding)
+            if contrast(at: candidate, hue: hue, chroma: chroma) >= target
             {
-                further = candidate
+                succeeding = candidate
             }
             else
             {
-                nearer = candidate
+                failing = candidate
             }
         }
-        return Lightness.midpoint(nearer, further)
+        return Lightness.midpoint(failing, succeeding)
     }
 
     private func contrast(
