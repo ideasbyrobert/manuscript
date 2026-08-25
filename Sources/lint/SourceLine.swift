@@ -14,6 +14,21 @@ struct SourceLine
             && (code.contains("//") || code.contains("/*"))
     }
 
+    var carriesPublic: Bool
+    {
+        let body = code.drop { $0 == " " }
+        return body.hasPrefix("public ") || body.hasPrefix("open ")
+    }
+
+    var opensTopLevelType: Bool
+    {
+        guard let first = text.first, first != " " else
+        {
+            return false
+        }
+        return Declarations.opens(code)
+    }
+
     var opensBraceOnSameLine: Bool
     {
         guard code.reversed().drop(while: { $0 == " " }).first == "{" else

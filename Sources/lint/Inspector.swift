@@ -14,9 +14,19 @@ struct Inspector
     private func inspect(_ file: URL) -> [Violation]
     {
         let location = tree.location(of: file)
-        return tree.lines(of: file).flatMap { line in
-            judge(line, at: location)
+        let lines = tree.lines(of: file)
+        var found = lines.flatMap { judge($0, at: location) }
+        let types = Declarations.count(in: lines)
+        if types > 1
+        {
+            found.append(
+                Violation(
+                    location: location,
+                    line: 1,
+                    rule: "types",
+                    detail: "\(types) types in one file"))
         }
+        return found
     }
 
     private func judge(_ line: SourceLine, at location: String) -> [Violation]
@@ -48,6 +58,15 @@ struct Inspector
                     line: line.number,
                     rule: "width",
                     detail: "\(line.width) columns"))
+        }
+        if line.carriesPublic
+        {
+            found.append(
+                Violation(
+                    location: location,
+                    line: line.number,
+                    rule: "access",
+                    detail: "public declaration"))
         }
         return found
     }

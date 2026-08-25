@@ -36,4 +36,11 @@ struct SourceLineTests
         #expect(!closure.opensBraceOnSameLine)
         #expect(opening.opensBraceOnSameLine)
     }
+
+    @Test("only a line at the margin opens a top-level type")
+    func indentedTypesAreNested()
+    {
+        #expect(SourceLine(number: 1, text: "struct A").opensTopLevelType)
+        #expect(!SourceLine(number: 1, text: "    struct A").opensTopLevelType)
+    }
 }
