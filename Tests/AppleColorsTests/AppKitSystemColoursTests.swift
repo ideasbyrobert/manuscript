@@ -1,3 +1,4 @@
+import AppKit
 import Testing
 
 @testable import AppleColors
@@ -55,6 +56,25 @@ struct AppKitSystemColoursTests
             for colour in SystemColour.allCases
             {
                 #expect(source.colour(colour, in: .light).isWithinGamut)
+            }
+        }
+    }
+
+    @Test("every sampled colour is opaque")
+    func nothingCarriesAlpha()
+    {
+        let named: [NSAppearance.Name] = [.aqua, .darkAqua]
+        for name in named
+        {
+            NSAppearance(named: name)?.performAsCurrentDrawingAppearance
+            {
+                for colour in SystemColour.allCases
+                {
+                    let appKit = AppKitSystemColours
+                        .appKitColour(for: colour)
+                        .usingColorSpace(.sRGB)
+                    #expect(appKit?.alphaComponent == 1, "\(colour)")
+                }
             }
         }
     }
