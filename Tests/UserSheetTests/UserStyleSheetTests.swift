@@ -47,8 +47,8 @@ struct UserStyleSheetTests
           arguments: UserStyleSheetTests.pairs)
     func bothAppearancesAgree(pair: ThemePair)
     {
-        let light = Tokens.rule(for: pair.light).declarations
-        let dark = Tokens.rule(for: pair.dark).declarations
+        let light = Tokens.rule(for: pair.light, on: [":root"]).declarations
+        let dark = Tokens.rule(for: pair.dark, on: [":root"]).declarations
         #expect(light.map { $0.property } == dark.map { $0.property })
         #expect(light.count == PaletteName.allCases.count)
     }
@@ -117,5 +117,29 @@ struct UserStyleSheetTests
         #expect(
             sheet.contains("background-color: transparent"),
             "the ground the page painted survives under our ink")
+    }
+
+    @Test("a page that declares its own scheme is believed over the system",
+          arguments: UserStyleSheetTests.pairs)
+    func aDeclaredSchemeWins(pair: ThemePair)
+    {
+        let sheet = text(pair)
+        let darkKeyword = pair.dark.palette.notation(.keyword)
+        let lightKeyword = pair.light.palette.notation(.keyword)
+        guard let declaredDark = sheet.range(of: "[data-theme=\"dark\"]"),
+              let declaredLight = sheet.range(of: "[data-theme=\"light\"]"),
+              let system = sheet.range(of: "@media (prefers-color-scheme")
+        else
+        {
+            Issue.record("the sheet never listens to the page")
+            return
+        }
+        let afterDark = sheet[declaredDark.upperBound...]
+        let afterLight = sheet[declaredLight.upperBound...]
+        #expect(afterDark.contains("--manuscript-keyword: " + darkKeyword))
+        #expect(afterLight.contains("--manuscript-keyword: " + lightKeyword))
+        #expect(
+            system.lowerBound < declaredLight.lowerBound,
+            "a page declared light must outrank a system that says dark")
     }
 }
