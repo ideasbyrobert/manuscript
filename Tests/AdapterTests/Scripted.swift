@@ -13,8 +13,8 @@ actor Scripted: Link
     private(set) var ended = false
     private var next = 1
     private var waiting: [Int: CheckedContinuation<Message, any Error>] = [:]
-    private var listening: [String: [CheckedContinuation<Message?, Never>]]
-        = [:]
+    private var listening: [String: [Listener]] = [:]
+    private var listeners = 0
     private var unclaimed: [String: [Message]] = [:]
 
     var commands: [String]
@@ -56,10 +56,32 @@ actor Scripted: Link
             unclaimed[event] = kept
             return first
         }
-        return await withCheckedContinuation
+        listeners += 1
+        let id = listeners
+        return await withTaskCancellationHandler
         {
-            listening[event, default: []].append($0)
+            await withCheckedContinuation
+            {
+                listening[event, default: []].append(Listener(id: id, wake: $0))
+            }
         }
+        onCancel:
+        {
+            Task
+            {
+                await self.abandon(event, id)
+            }
+        }
+    }
+
+    private func abandon(_ event: String, _ id: Int)
+    {
+        guard let index = listening[event]?.firstIndex(where: { $0.id == id })
+        else
+        {
+            return
+        }
+        listening[event]?.remove(at: index).wake.resume(returning: nil)
     }
 
     func end() async -> Shutdown.Reason
@@ -74,7 +96,7 @@ actor Scripted: Link
         {
             for listener in listeners
             {
-                listener.resume(returning: nil)
+                listener.wake.resume(returning: nil)
             }
         }
         listening = [:]
@@ -111,7 +133,7 @@ actor Scripted: Link
         }
         for listener in listeners
         {
-            listener.resume(returning: message)
+            listener.wake.resume(returning: message)
         }
     }
 

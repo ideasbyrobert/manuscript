@@ -31,7 +31,17 @@ struct LaunchTests
     private func outcome(
         of task: Task<Outcome, Never>) async throws -> Outcome
     {
-        try await within(.seconds(5)) { await task.value }
+        try await within(.seconds(5))
+        {
+            await withTaskCancellationHandler
+            {
+                await task.value
+            }
+            onCancel:
+            {
+                task.cancel()
+            }
+        }
     }
 
     @Test("initialize goes first and alone")
