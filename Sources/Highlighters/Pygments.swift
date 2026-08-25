@@ -4,11 +4,15 @@ package enum Pygments
 {
     package static let highlighter = Highlighter(
         name: "Pygments",
-        containers: scoped(["pre", "code"])
-            + wrappers.map { "pre" + $0 },
+        containers: scoped(["pre", "code"]) + hosts,
         bindings: bindings)
 
     private static let wrappers = [".highlight", ".chroma", ".codehilite"]
+
+    private static let hosts = wrappers.flatMap
+    {
+        [$0 + ":has(> pre)", "pre" + $0]
+    }
 
     private static func scoped(_ classes: [String]) -> [String]
     {
