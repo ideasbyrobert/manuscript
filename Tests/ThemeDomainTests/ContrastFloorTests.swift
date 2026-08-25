@@ -10,6 +10,8 @@ struct ContrastFloorTests
     private static let floors: [PaletteName: ContrastRatio] =
     [
         .text: 10.0,
+        .dimText: 6.5,
+        .faintText: 3.5,
         .keyword: 5.5,
         .type: 4.5,
         .member: 4.5,
