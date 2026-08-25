@@ -47,6 +47,8 @@ let package = Package(
         .testTarget(name: "TypographyTests", dependencies: ["Typography"]),
         .target(name: "Gate"),
         .testTarget(name: "GateTests", dependencies: ["Gate"]),
+        .target(name: "Web", dependencies: ["Gate"]),
+        .testTarget(name: "WebTests", dependencies: ["Web", "Gate"]),
         .target(name: "Adapter"),
         .executableTarget(name: "mock-adapter", dependencies: ["Adapter"]),
         .testTarget(
