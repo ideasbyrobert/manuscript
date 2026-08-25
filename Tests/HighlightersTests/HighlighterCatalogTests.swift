@@ -1,0 +1,50 @@
+import Testing
+
+@testable import Highlighters
+
+@Suite("What the web calls its tokens")
+struct HighlighterCatalogTests
+{
+    @Test("every highlighter names a container to paint")
+    func everyHighlighterHasAContainer()
+    {
+        for highlighter in HighlighterCatalog.all
+        {
+            #expect(
+                !highlighter.containers.isEmpty,
+                "\(highlighter.name) paints nothing")
+        }
+    }
+
+    @Test("no binding is left without a selector")
+    func everyBindingSelectsSomething()
+    {
+        for highlighter in HighlighterCatalog.all
+        {
+            for binding in highlighter.bindings
+            {
+                #expect(
+                    !binding.selectors.isEmpty,
+                    "\(highlighter.name) binds \(binding.role) to nothing")
+            }
+        }
+    }
+
+    @Test("a selector is claimed by one role only")
+    func noSelectorIsClaimedTwice()
+    {
+        for highlighter in HighlighterCatalog.all
+        {
+            var seen: Set<String> = []
+            for binding in highlighter.bindings
+            {
+                for selector in binding.selectors
+                {
+                    #expect(
+                        seen.insert(selector).inserted,
+                        "\(highlighter.name) repeats \(selector)")
+                }
+            }
+        }
+    }
+}

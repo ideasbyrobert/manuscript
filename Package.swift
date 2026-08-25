@@ -16,6 +16,12 @@ let package = Package(
             dependencies: ["Specimen", "ThemeDomain"]),
         .target(name: "Cascade"),
         .testTarget(name: "CascadeTests", dependencies: ["Cascade"]),
+        .target(
+            name: "Highlighters",
+            dependencies: ["Cascade", "ThemeDomain"]),
+        .testTarget(
+            name: "HighlightersTests",
+            dependencies: ["Highlighters", "ThemeDomain"]),
         .target(name: "Typography"),
         .target(
             name: "Specimen",
