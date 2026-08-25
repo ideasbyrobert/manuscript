@@ -9,7 +9,8 @@ let package = Package(
         .executable(name: "lint", targets: ["lint"]),
         .executable(name: "preview", targets: ["preview"]),
         .executable(name: "stylesheet", targets: ["stylesheet"]),
-        .executable(name: "mock-adapter", targets: ["mock-adapter"])
+        .executable(name: "mock-adapter", targets: ["mock-adapter"]),
+        .executable(name: "posture-probe", targets: ["posture-probe"])
     ],
     targets: [
         .executableTarget(name: "lint"),
@@ -49,6 +50,11 @@ let package = Package(
         .testTarget(
             name: "AdapterTests",
             dependencies: ["Adapter", "mock-adapter"]),
+        .target(name: "Posture", dependencies: ["Adapter"]),
+        .executableTarget(name: "posture-probe", dependencies: ["Posture"]),
+        .testTarget(
+            name: "PostureTests",
+            dependencies: ["Posture", "posture-probe", "Adapter"]),
         .target(name: "Revision"),
         .testTarget(name: "RevisionTests", dependencies: ["Revision"]),
         .target(name: "Pigment"),
