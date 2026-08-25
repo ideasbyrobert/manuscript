@@ -75,4 +75,41 @@ struct CodeSurfaceTests
             .first { $0.property == "background-image" }
         #expect(image?.value == "none")
     }
+
+    @Test("an emphasis becomes the property it names, and only that one")
+    func emphasisReachesItsProperty()
+    {
+        let hljs = HighlightJS.highlighter
+        func painted(_ emphasis: Emphasis) -> [String: String]
+        {
+            let binding = hljs.bindings.first { $0.emphasis == emphasis }
+            let rule = Self.rules.first { $0.selectors == binding?.selectors }
+            var found: [String: String] = [:]
+            for declaration in rule?.declarations ?? []
+            {
+                found[declaration.property] = declaration.value
+            }
+            return found
+        }
+        let italic = painted(.italic)
+        let bold = painted(.bold)
+        let plain = painted(.none)
+        #expect(italic["font-style"] == "italic")
+        #expect(italic["font-weight"] == nil)
+        #expect(bold["font-weight"] == "700")
+        #expect(bold["font-style"] == nil)
+        #expect(plain.count == 1 && plain["color"] != nil)
+    }
+
+    @Test("a ground is stated before any token it holds",
+          arguments: HighlighterCatalog.all)
+    func theGroundComesFirst(highlighter: Highlighter)
+    {
+        let all = Self.rules
+        let ground = all.firstIndex { $0.selectors == highlighter.containers }
+        let token = highlighter.bindings.first?.selectors
+        let painted = all.firstIndex { $0.selectors == token }
+        #expect(ground != nil && painted != nil)
+        #expect((ground ?? 0) < (painted ?? 0), "\(highlighter.name)")
+    }
 }

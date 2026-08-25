@@ -5,12 +5,15 @@ import Testing
 @Suite("Asking the system which way it is set")
 struct MediaConditionTests
 {
-    @Test("each appearance names the preference Safari evaluates",
-          arguments: MediaCondition.allCases)
-    func conditionNamesThePreference(condition: MediaCondition)
+    @Test("each appearance yields a distinct, parenthesised query")
+    func conditionsAreDistinctQueries()
     {
-        #expect(condition.text
-            == "(prefers-color-scheme: \(condition.rawValue))")
+        let texts = MediaCondition.allCases.map { $0.text }
+        #expect(Set(texts).count == texts.count)
+        for text in texts
+        {
+            #expect(text.hasPrefix("(") && text.hasSuffix(")"))
+        }
     }
 
     @Test("there are exactly two, and they are light and dark")

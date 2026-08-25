@@ -41,7 +41,49 @@ struct BlockTests
     @Test("raising reaches rules nested inside a condition")
     func raisingDescendsThroughConditions()
     {
-        let block = Block.when(.dark, [.rule(painted)])
-        #expect(block.important.text.contains("!important"))
+        let block = Block.when(.dark, [.rule(painted), .rule(painted)])
+        let count = block.important.text
+            .split(separator: "\n")
+            .filter { $0.hasSuffix("!important;") }
+            .count
+        #expect(count == 2, "raised \(count) of 2")
+    }
+
+    @Test("two rules under one condition keep a blank line between them")
+    func siblingsStayApartWithoutStrayIndent()
+    {
+        let block = Block.when(.dark, [.rule(painted), .rule(painted)])
+        #expect(block.text == """
+        @media (prefers-color-scheme: dark)
+        {
+            :root
+            {
+                color: #eee;
+            }
+
+            :root
+            {
+                color: #eee;
+            }
+        }
+        """)
+    }
+
+    @Test("a condition inside a condition indents twice")
+    func nestingIndentsAgain()
+    {
+        let block = Block.when(.dark, [.when(.light, [.rule(painted)])])
+        #expect(block.text == """
+        @media (prefers-color-scheme: dark)
+        {
+            @media (prefers-color-scheme: light)
+            {
+                :root
+                {
+                    color: #eee;
+                }
+            }
+        }
+        """)
     }
 }

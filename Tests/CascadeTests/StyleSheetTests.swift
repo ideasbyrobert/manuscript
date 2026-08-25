@@ -34,20 +34,14 @@ struct StyleSheetTests
         #expect(padded.text == ground.text)
     }
 
-    @Test("sealing raises every declaration, however deeply nested")
+    @Test("sealing raises every declaration and changes nothing else")
     func sealingReachesEverything()
     {
-        let sealed = sheet.userOrigin.text
-        let declarations = sealed
-            .split(separator: "\n")
-            .filter { $0.contains(":") && $0.hasSuffix(";") }
-        #expect(!declarations.isEmpty)
-        for declaration in declarations
-        {
-            #expect(
-                declaration.contains("!important"),
-                "unsealed: \(declaration)")
-        }
+        let expected = sheet.text
+            .split(separator: ";", omittingEmptySubsequences: false)
+            .joined(separator: " !important;")
+        #expect(sheet.userOrigin.text == expected)
+        #expect(sheet.text.contains(";"))
     }
 
     @Test("an unsealed sheet claims no importance anywhere")

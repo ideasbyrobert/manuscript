@@ -20,13 +20,10 @@ struct TokenNameTests
             == "var(--manuscript-keyword)")
     }
 
-    @Test("the sheet defines nothing a site might also define")
-    func noGenericPropertyIsDefined()
+    @Test("the sheet defines nothing a site might also define",
+          arguments: ThemePair.all(in: Theme.catalogue()))
+    func noGenericPropertyIsDefined(pair: ThemePair)
     {
-        guard let pair = ThemePair.all(in: Theme.catalogue()).first else
-        {
-            return
-        }
         let sheet = UserStyleSheet.sheet(for: pair).text
         for line in sheet.split(separator: "\n")
         {
@@ -47,7 +44,13 @@ struct TokenNameTests
     func everyReferenceResolves(pair: ThemePair)
     {
         let sheet = UserStyleSheet.sheet(for: pair).text
-        let defined = Set(PaletteName.allCases.map { TokenName.of($0) })
+        let defined = Set(
+            sheet.split(separator: "\n")
+                .map { $0.trimmingCharacters(in: .whitespaces) }
+                .filter { $0.hasPrefix("--manuscript-") }
+                .compactMap { $0.split(separator: ":").first }
+                .map(String.init))
+        #expect(!defined.isEmpty, "the sheet defines no token at all")
         var rest = Substring(sheet)
         while let opening = rest.range(of: "var(")
         {

@@ -2,6 +2,7 @@ import Testing
 
 @testable import Cascade
 @testable import Highlighters
+@testable import ThemeDomain
 
 @Suite("What the web calls its tokens")
 struct HighlighterCatalogTests
@@ -183,6 +184,26 @@ struct HighlighterCatalogTests
             #expect(
                 neutralised.contains { $0.hasSuffix(selector) },
                 "\(selector) keeps the ground its own theme painted")
+        }
+    }
+
+    @Test("the catalogue holds exactly the three it was written for")
+    func theCatalogueIsComplete()
+    {
+        #expect(
+            HighlighterCatalog.all.map { $0.name }
+                == ["highlight.js", "Prism", "Pygments"])
+    }
+
+    @Test("every highlighter binds the roles a reader meets on every page",
+          arguments: HighlighterCatalog.all)
+    func coreRolesAreBound(highlighter: Highlighter)
+    {
+        let bound = Set(highlighter.bindings.map { $0.role })
+        for role in [PaletteName.comment, .keyword, .string, .number,
+                     .type, .member]
+        {
+            #expect(bound.contains(role), "\(highlighter.name) lacks \(role)")
         }
     }
 }
