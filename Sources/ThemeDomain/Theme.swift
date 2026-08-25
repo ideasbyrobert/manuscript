@@ -4,7 +4,7 @@ import Pigment
 package struct Theme: Sendable
 {
     let preset: Preset
-    let appearance: Appearance
+    package let appearance: Appearance
     package let palette: Palette
 
     init(
@@ -20,7 +20,7 @@ package struct Theme: Sendable
             systemColours: systemColours).resolve()
     }
 
-    var identifier: String
+    package var identifier: String
     {
         "\(preset.id)-\(appearance.rawValue)"
     }
@@ -30,7 +30,7 @@ package struct Theme: Sendable
         "\(preset.title) \(appearance.title)"
     }
 
-    static func catalogue(
+    package static func catalogue(
         systemColours: any SystemColourSource = RecordedSystemColours.macOS27)
         -> [Theme]
     {
