@@ -7,7 +7,8 @@ let package = Package(
     platforms: [.macOS(.v12)],
     products: [
         .executable(name: "lint", targets: ["lint"]),
-        .executable(name: "preview", targets: ["preview"])
+        .executable(name: "preview", targets: ["preview"]),
+        .executable(name: "stylesheet", targets: ["stylesheet"])
     ],
     targets: [
         .executableTarget(name: "lint"),
@@ -22,6 +23,17 @@ let package = Package(
         .testTarget(
             name: "HighlightersTests",
             dependencies: ["Highlighters", "ThemeDomain"]),
+        .target(
+            name: "UserSheet",
+            dependencies: [
+                "Cascade", "Highlighters", "ThemeDomain",
+                "AppleColors"]),
+        .testTarget(
+            name: "UserSheetTests",
+            dependencies: ["UserSheet", "Cascade", "ThemeDomain"]),
+        .executableTarget(
+            name: "stylesheet",
+            dependencies: ["UserSheet", "ThemeDomain"]),
         .target(name: "Typography"),
         .target(
             name: "Specimen",
