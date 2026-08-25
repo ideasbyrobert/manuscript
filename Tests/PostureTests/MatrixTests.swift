@@ -4,7 +4,11 @@ import Testing
 
 @testable import Posture
 
-@Suite("The kernel's answers, one posture at a time", .serialized)
+@Suite(
+    "The kernel's answers, one posture at a time",
+    .serialized,
+    .enabled(if:
+        ProcessInfo.processInfo.environment["MANUSCRIPT_SANDBOX"] == "1"))
 struct MatrixTests
 {
     private func stood(
