@@ -39,4 +39,22 @@ struct InspectorTests
         try fixture.write("Tests/ATests/QuoteTests.swift", "")
         #expect(fixture.violations.filter { $0.rule == "access" }.isEmpty)
     }
+
+    @Test("every rule the standard names has a name here")
+    func everyRuleIsNamed() throws
+    {
+        let fixture = try PackageFixture()
+        defer { fixture.remove() }
+        try fixture.write(
+            "Sources/A/Bad.swift",
+            "public struct Bad {\n"
+                + "    let x = 1 // note\n"
+                + "    let long = \"" + String(repeating: "x", count: 80)
+                + "\"\n}\nenum Worse\n{\n}\n")
+        try fixture.write("README.md", "")
+        let rules = Set(fixture.violations.map { $0.rule })
+        #expect(rules == [
+            "braces", "comments", "width", "access", "types", "mirror",
+            "foreign"])
+    }
 }

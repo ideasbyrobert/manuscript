@@ -9,6 +9,7 @@ struct Inspector
     var violations: [Violation]
     {
         tree.swiftFiles.flatMap { inspect($0) }
+            + tree.allFiles.filter(Foreign.rejects).map(foreign)
     }
 
     private func inspect(_ file: URL) -> [Violation]
@@ -26,7 +27,25 @@ struct Inspector
                     rule: "types",
                     detail: "\(types) types in one file"))
         }
+        if Counterpart(tree: tree).isMissing(for: file)
+        {
+            found.append(
+                Violation(
+                    location: location,
+                    line: 1,
+                    rule: "mirror",
+                    detail: "no mirrored test"))
+        }
         return found
+    }
+
+    private func foreign(_ file: URL) -> Violation
+    {
+        Violation(
+            location: tree.location(of: file),
+            line: 1,
+            rule: "foreign",
+            detail: "not Swift")
     }
 
     private func judge(_ line: SourceLine, at location: String) -> [Violation]
