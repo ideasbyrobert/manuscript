@@ -5,7 +5,13 @@ package enum HighlightJS
 {
     package static let highlighter = Highlighter(
         name: "highlight.js",
-        containers: ["pre code.hljs", "code.hljs", ".hljs"],
+        containers: [
+            "pre.hljs",
+            "pre:has(> code.hljs)",
+            "pre code.hljs",
+            "code.hljs",
+            ".hljs"
+        ],
         bindings: bindings,
         resets: [
             Rule([".hljs-emphasis"], [Declaration("font-style", "italic")]),

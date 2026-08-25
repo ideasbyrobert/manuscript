@@ -47,4 +47,19 @@ struct HighlighterCatalogTests
             }
         }
     }
+
+    @Test("every highlighter can paint a block, not only a text run")
+    func everyGroundReachesABlockElement()
+    {
+        for highlighter in HighlighterCatalog.all
+        {
+            let reachesPre = highlighter.containers.contains
+            {
+                $0.contains("pre")
+            }
+            #expect(
+                reachesPre,
+                "\(highlighter.name) grounds only a text run")
+        }
+    }
 }
