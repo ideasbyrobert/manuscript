@@ -105,4 +105,17 @@ struct UserStyleSheetTests
             sheet.contains("[data-color-mode]"),
             "a :root bridge supplies nothing to a themed descendant")
     }
+
+    @Test("an emphasised line is marked without a second ground",
+          arguments: UserStyleSheetTests.pairs)
+    func theBandMarksWithoutFilling(pair: ThemePair)
+    {
+        let sheet = text(pair)
+        #expect(
+            sheet.contains("box-shadow: inset 3px 0 0"),
+            "an emphasised line carries no mark at all")
+        #expect(
+            sheet.contains("background-color: transparent"),
+            "the ground the page painted survives under our ink")
+    }
 }

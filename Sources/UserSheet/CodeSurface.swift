@@ -54,9 +54,10 @@ enum CodeSurface
         Rule(
             Pygments.lineBands,
             [
+                Declaration("background-color", "transparent"),
                 Declaration(
-                    "background-color",
-                    TokenName.reference(.cursorLine))
+                    "box-shadow",
+                    "inset 3px 0 0 " + TokenName.reference(.keyword))
             ])
     }
 
