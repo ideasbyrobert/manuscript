@@ -66,6 +66,8 @@ let package = Package(
         .testTarget(
             name: "PostureTests",
             dependencies: ["Posture", "posture-probe", "Adapter"]),
+        .target(name: "Decoding"),
+        .testTarget(name: "DecodingTests", dependencies: ["Decoding"]),
         .target(name: "Revision"),
         .testTarget(name: "RevisionTests", dependencies: ["Revision"]),
         .target(name: "Pigment"),
