@@ -16,4 +16,19 @@ struct FontStackTests
     {
         #expect(FontStack.mono.hasSuffix(", monospace"))
     }
+
+    @Test("no stack names a face Safari has been shown to ignore")
+    func noStackCarriesAnInertName()
+    {
+        let families = FontStack.mono
+            .split(separator: ",")
+            .map { $0.trimmingCharacters(in: .whitespaces) }
+        for family in families
+        {
+            #expect(!family.contains("\""), "\(family) is quoted for nothing")
+            #expect(
+                !family.hasPrefix("SF"),
+                "\(family) names an Apple face by a name Safari refuses")
+        }
+    }
 }
