@@ -9,6 +9,8 @@ let package = Package(
         .executable(name: "lint", targets: ["lint"])
     ],
     targets: [
-        .executableTarget(name: "lint")
+        .executableTarget(name: "lint"),
+        .target(name: "Pigment"),
+        .testTarget(name: "PigmentTests", dependencies: ["Pigment"])
     ]
 )
