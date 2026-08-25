@@ -63,7 +63,7 @@ package enum CodeSurface
     private static var bridge: Rule
     {
         Rule(
-            [":root"],
+            [":root", "[data-color-mode]"],
             PrettyLights.bridges.map
             {
                 Declaration($0.property, TokenName.reference($0.role))

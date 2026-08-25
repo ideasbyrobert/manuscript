@@ -96,4 +96,13 @@ struct UserStyleSheetTests
             #expect(sheet.contains(stated), "\(role) drifted")
         }
     }
+    @Test("the bridge reaches where GitHub declares its own tokens",
+          arguments: UserStyleSheetTests.pairs)
+    func theBridgeReachesThemedElements(pair: ThemePair)
+    {
+        let sheet = text(pair)
+        #expect(
+            sheet.contains("[data-color-mode]"),
+            "a :root bridge supplies nothing to a themed descendant")
+    }
 }
