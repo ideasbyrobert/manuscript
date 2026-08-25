@@ -7,18 +7,10 @@ package enum UserStyleSheet
     {
         StyleSheet(
             [
-                .rule(scheme),
                 .rule(Tokens.rule(for: pair.light)),
                 .when(.dark, [.rule(Tokens.rule(for: pair.dark))])
             ]
             + CodeSurface.blocks)
             .userOrigin
-    }
-
-    private static var scheme: Rule
-    {
-        Rule(
-            ["html", ":root"],
-            [Declaration("color-scheme", "light dark")])
     }
 }
