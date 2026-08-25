@@ -52,4 +52,48 @@ struct UserStyleSheetTests
         #expect(light.map { $0.property } == dark.map { $0.property })
         #expect(light.count == PaletteName.allCases.count)
     }
+
+    @Test("a sheet that paints nothing is not a sheet",
+          arguments: UserStyleSheetTests.pairs)
+    func theSheetActuallyPaints(pair: ThemePair)
+    {
+        let sheet = text(pair)
+        for signature in [
+            ".hljs-keyword",
+            ".token.keyword",
+            ".chroma .k",
+            "--prettylights-syntax-keyword",
+            "--manuscript-keyword"]
+        {
+            #expect(sheet.contains(signature), "missing \(signature)")
+        }
+    }
+
+    @Test("dark is stated after light, which is what makes it win",
+          arguments: UserStyleSheetTests.pairs)
+    func darkFollowsLight(pair: ThemePair)
+    {
+        let sheet = text(pair)
+        guard let light = sheet.range(of: ":root"),
+              let dark = sheet.range(of: "@media (prefers-color-scheme")
+        else
+        {
+            Issue.record("the sheet states neither appearance")
+            return
+        }
+        #expect(light.lowerBound < dark.lowerBound)
+    }
+
+    @Test("a token carries the colour its role was solved to",
+          arguments: UserStyleSheetTests.pairs)
+    func tokensCarryTheColourTheyName(pair: ThemePair)
+    {
+        let sheet = text(pair)
+        for role in PaletteName.allCases
+        {
+            let solved = pair.light.palette.notation(role)
+            let stated = "--manuscript-\(role.rawValue): \(solved)"
+            #expect(sheet.contains(stated), "\(role) drifted")
+        }
+    }
 }

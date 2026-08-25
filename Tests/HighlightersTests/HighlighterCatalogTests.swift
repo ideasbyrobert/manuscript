@@ -48,18 +48,54 @@ struct HighlighterCatalogTests
         }
     }
 
-    @Test("every highlighter can paint a block, not only a text run")
+    @Test("every highlighter grounds a block, not a run of text")
     func everyGroundReachesABlockElement()
     {
         for highlighter in HighlighterCatalog.all
         {
-            let reachesPre = highlighter.containers.contains
+            let grounded = highlighter.containers.contains
             {
-                $0.contains("pre")
+                Self.subject(of: $0).hasPrefix("pre")
             }
-            #expect(
-                reachesPre,
-                "\(highlighter.name) grounds only a text run")
+            #expect(grounded, "\(highlighter.name) grounds no block")
         }
+    }
+
+    @Test("a descendant selector does not count as grounding a block")
+    func theSubjectIsTheRightmostCompound()
+    {
+        #expect(Self.subject(of: "pre code.hljs") == "code.hljs")
+        #expect(Self.subject(of: "pre.hljs") == "pre.hljs")
+        #expect(Self.subject(of: "pre:has(> code.hljs)") == "pre:has")
+        #expect(Self.subject(of: ".highlight pre") == "pre")
+        #expect(Self.subject(of: ".chroma") == ".chroma")
+    }
+
+    private static func subject(of selector: String) -> String
+    {
+        var depth = 0
+        var flat = ""
+        for character in selector
+        {
+            if character == "("
+            {
+                depth += 1
+                continue
+            }
+            if character == ")"
+            {
+                depth -= 1
+                continue
+            }
+            if depth == 0
+            {
+                flat.append(character)
+            }
+        }
+        let parts = flat.split
+        {
+            $0 == " " || $0 == ">"
+        }
+        return String(parts.last ?? "")
     }
 }
