@@ -20,4 +20,16 @@ package enum Fixture
         "</body></html>"
     ]
     .joined(separator: "\n")
+
+    package static let filled =
+    [
+        "<!DOCTYPE html><html><head><meta charset=\"utf-8\">",
+        "<style>html,body{margin:0;height:100%}",
+        ".highlight,.highlight pre{margin:0;height:100%}</style>",
+        "</head><body>",
+        "<div class=\"highlight\"><pre><code>",
+        "<span class=\"k\">let</span> x</code></pre></div>",
+        "</body></html>"
+    ]
+    .joined(separator: "\n")
 }

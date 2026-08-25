@@ -10,7 +10,8 @@ let package = Package(
         .executable(name: "preview", targets: ["preview"]),
         .executable(name: "stylesheet", targets: ["stylesheet"]),
         .executable(name: "mock-adapter", targets: ["mock-adapter"]),
-        .executable(name: "posture-probe", targets: ["posture-probe"])
+        .executable(name: "posture-probe", targets: ["posture-probe"]),
+        .executable(name: "surface", targets: ["surface"])
     ],
     targets: [
         .executableTarget(name: "lint"),
@@ -48,7 +49,13 @@ let package = Package(
         .target(name: "Gate"),
         .testTarget(name: "GateTests", dependencies: ["Gate"]),
         .target(name: "Web", dependencies: ["Gate"]),
-        .testTarget(name: "WebTests", dependencies: ["Web", "Gate"]),
+        .executableTarget(
+            name: "surface",
+            dependencies: ["Web", "UserSheet", "ThemeDomain"]),
+        .testTarget(
+            name: "WebTests",
+            dependencies: [
+                "Web", "Gate", "UserSheet", "ThemeDomain", "Pigment"]),
         .target(name: "Adapter"),
         .executableTarget(name: "mock-adapter", dependencies: ["Adapter"]),
         .testTarget(
