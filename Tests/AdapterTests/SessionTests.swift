@@ -92,6 +92,7 @@ struct SessionTests
         let session = try await mock(
             ["MOCK_DISCONNECT": "linger"],
             patience: quick)
+        _ = try await session.request("initialize")
         let started = ContinuousClock.now
         let reason = await session.end()
         #expect(reason == .lingered)
@@ -105,6 +106,7 @@ struct SessionTests
         let session = try await mock(
             ["MOCK_DISCONNECT": "ignore"],
             patience: quick)
+        _ = try await session.request("initialize")
         let started = ContinuousClock.now
         let reason = await session.end()
         #expect(reason == .silent)
@@ -118,6 +120,7 @@ struct SessionTests
         let session = try await mock(
             ["MOCK_DISCONNECT": "ignore-term"],
             patience: quick)
+        _ = try await session.request("initialize")
         let started = ContinuousClock.now
         let reason = await session.end()
         #expect(reason == .lingered)
