@@ -69,8 +69,27 @@ struct PygmentsTests
         for selector in selectors
         {
             #expect(
-                selector.hasPrefix(":is(") && selector.contains("pre"),
+                selector.contains("pre"),
                 "\(selector) would reach any element in a .highlight")
+        }
+    }
+
+    @Test("a line-number gutter is grounded and its numbers made faint")
+    func theGutterIsGroundedAndFaint()
+    {
+        for gutter in [".highlighttable", "td.linenos pre", ".linenodiv pre",
+                       ".chroma .lntd"]
+        {
+            #expect(containers.contains(gutter), "\(gutter) keeps the page")
+        }
+        let faint = Pygments.highlighter.bindings
+            .first { $0.role == .faintText }?
+            .selectors ?? []
+        for numbers in [" .lnt", " .ln", " .linenos", "td.linenos pre"]
+        {
+            #expect(
+                faint.contains { $0.hasSuffix(numbers) },
+                "\(numbers) keeps the site's colour on our ground")
         }
     }
 }

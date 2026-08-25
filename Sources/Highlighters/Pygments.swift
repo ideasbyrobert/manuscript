@@ -5,7 +5,8 @@ package enum Pygments
 {
     package static let highlighter = Highlighter(
         name: "Pygments",
-        containers: wrappers.flatMap { [$0 + " pre", $0 + " code"] } + hosts,
+        containers: wrappers.flatMap { [$0 + " pre", $0 + " code"] }
+            + hosts + gutters,
         bindings: bindings,
         resets: resets)
 
@@ -19,6 +20,13 @@ package enum Pygments
             scoped([".err", ".gd", ".gi", ".gr", ".gt"]),
             [Declaration("background-color", "transparent")]),
         Rule(scoped([".err"]), [Declaration("border", "none")])
+    ]
+
+    private static let gutters =
+    [
+        ".highlighttable", ".highlighttable td", ".codehilitetable",
+        ".codehilitetable td", ".chroma .lntable", ".chroma .lntd",
+        "td.linenos pre", ".linenodiv pre"
     ]
 
     private static let hosts = wrappers.flatMap
@@ -72,6 +80,13 @@ package enum Pygments
         TokenBinding(scoped([".ge"]), .text, .italic),
         TokenBinding(scoped([".gs", ".ges"]), .text, .bold),
         TokenBinding(scoped([".g"]), .text),
-        TokenBinding(scoped([".err", ".gr", ".gt"]), .error)
+        TokenBinding(scoped([".err", ".gr", ".gt"]), .error),
+        TokenBinding(
+            scoped([".linenos", ".lnt", ".ln"])
+                + ["td.linenos pre", ".linenodiv pre"],
+            .faintText),
+        TokenBinding(
+            scoped([".linenos.special"]) + ["td.linenos pre .special"],
+            .warning)
     ]
 }
