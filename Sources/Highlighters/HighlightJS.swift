@@ -15,7 +15,10 @@ package enum HighlightJS
         bindings: bindings,
         resets: [
             Rule([".hljs-emphasis"], [Declaration("font-style", "italic")]),
-            Rule([".hljs-strong"], [Declaration("font-weight", "700")])
+            Rule([".hljs-strong"], [Declaration("font-weight", "700")]),
+            Rule(
+                [".hljs-addition", ".hljs-deletion"],
+                [Declaration("background-color", "transparent")])
         ])
 
     private static let bindings: [TokenBinding] =

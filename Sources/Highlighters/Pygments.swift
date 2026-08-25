@@ -1,3 +1,4 @@
+import Cascade
 import ThemeDomain
 
 package enum Pygments
@@ -5,9 +6,20 @@ package enum Pygments
     package static let highlighter = Highlighter(
         name: "Pygments",
         containers: scoped(["pre", "code"]) + hosts,
-        bindings: bindings)
+        bindings: bindings,
+        resets: resets)
+
+    package static let lineBands = scoped([".hll", ".hl"])
 
     private static let wrappers = [".highlight", ".chroma", ".codehilite"]
+
+    private static let resets: [Rule] =
+    [
+        Rule(
+            scoped([".err", ".gd", ".gi", ".gr", ".gt"]),
+            [Declaration("background-color", "transparent")]),
+        Rule(scoped([".err"]), [Declaration("border", "none")])
+    ]
 
     private static let hosts = wrappers.flatMap
     {

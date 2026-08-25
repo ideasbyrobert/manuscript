@@ -13,6 +13,7 @@ package enum CodeSurface
             rules.append(contentsOf: highlighter.resets)
             rules.append(contentsOf: highlighter.bindings.map(paint))
         }
+        rules.append(band)
         rules.append(bridge)
         return rules.map { Block.rule($0) }
     }
@@ -46,6 +47,17 @@ package enum CodeSurface
             declarations.append(Declaration("font-style", "italic"))
         }
         return Rule(binding.selectors, declarations)
+    }
+
+    private static var band: Rule
+    {
+        Rule(
+            Pygments.lineBands,
+            [
+                Declaration(
+                    "background-color",
+                    TokenName.reference(.cursorLine))
+            ])
     }
 
     private static var bridge: Rule

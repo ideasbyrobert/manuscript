@@ -158,4 +158,31 @@ struct HighlighterCatalogTests
         }
         return !quoted && brackets == 0 && parentheses == 0
     }
+
+    @Test("every token that ships its own ground has it dealt with")
+    func everyPaintedTokenIsNeutralised()
+    {
+        let painted =
+        [
+            ".hljs-addition", ".hljs-deletion",
+            ".highlight .err", ".highlight .gd", ".highlight .gi",
+            ".token.operator", ".token.url", ".token.entity"
+        ]
+        let neutralised = HighlighterCatalog.all
+            .flatMap { $0.resets }
+            .filter
+            { rule in
+                rule.declarations.contains
+                {
+                    $0.property.hasPrefix("background")
+                }
+            }
+            .flatMap { $0.selectors }
+        for selector in painted
+        {
+            #expect(
+                neutralised.contains(selector),
+                "\(selector) keeps the ground its own theme painted")
+        }
+    }
 }
