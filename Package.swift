@@ -4,7 +4,7 @@ import PackageDescription
 
 let package = Package(
     name: "Manuscript",
-    platforms: [.macOS(.v12)],
+    platforms: [.macOS(.v15)],
     products: [
         .executable(name: "lint", targets: ["lint"]),
         .executable(name: "preview", targets: ["preview"]),
