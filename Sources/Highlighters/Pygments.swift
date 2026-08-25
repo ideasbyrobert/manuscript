@@ -81,6 +81,11 @@ package enum Pygments
         TokenBinding(scoped([".gs", ".ges"]), .text, .bold),
         TokenBinding(scoped([".g"]), .text),
         TokenBinding(scoped([".err", ".gr", ".gt"]), .error),
+        TokenBinding(scoped([".n", ".l", ".ld", ".x"]), .text),
+        TokenBinding(scoped([".ne"]), .error),
+        TokenBinding(scoped([".ni", ".esc"]), .alternateString),
+        TokenBinding(scoped([".py"]), .alternateMember),
+        TokenBinding(scoped([".w"]), .whitespace),
         TokenBinding(
             scoped([".linenos", ".lnt", ".ln"])
                 + ["td.linenos pre", ".linenodiv pre"],

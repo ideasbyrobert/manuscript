@@ -51,7 +51,8 @@ struct PygmentsTests
         for token in [
             ".k", ".kd", ".s", ".c", ".c1", ".m", ".mi", ".nf", ".nc",
             ".nb", ".nt", ".na", ".nv", ".o", ".p", ".se", ".cp",
-            ".gh", ".gu", ".gp", ".go", ".gi", ".gd", ".err"]
+            ".gh", ".gu", ".gp", ".go", ".gi", ".gd", ".err",
+            ".n", ".ne", ".ni", ".py", ".w", ".esc", ".x", ".l", ".ld"]
         {
             #expect(
                 bound.contains { $0.hasSuffix(" " + token) },
