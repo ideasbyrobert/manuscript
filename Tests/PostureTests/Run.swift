@@ -18,6 +18,8 @@ enum Run
         process.standardOutput = output
         process.standardError = errors
         try process.run()
+        try? output.fileHandleForWriting.close()
+        try? errors.fileHandleForWriting.close()
         let stdout = Task.detached
         {
             output.fileHandleForReading.readDataToEndOfFile()
