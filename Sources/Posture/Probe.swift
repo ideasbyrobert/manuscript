@@ -20,6 +20,21 @@ package enum Probe: String, CaseIterable, Codable, Sendable
 
     package func measure(_ arguments: [String]) async -> Report
     {
-        Report(self, verdicts: [])
+        let facts = Container.facts
+        switch self
+        {
+        case .sandbox:
+            let paths = ["outside": arguments.first ?? ""]
+            return Report(self, verdicts: Outside.measure(paths), facts: facts)
+        case .read:
+            let paths =
+            [
+                "documents": arguments.first ?? "",
+                "argv": arguments.dropFirst().first ?? ""
+            ]
+            return Report(self, verdicts: Outside.measure(paths), facts: facts)
+        default:
+            return Report(self, verdicts: [], facts: facts)
+        }
     }
 }
