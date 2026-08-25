@@ -49,4 +49,26 @@ struct StyleSheetTests
     {
         #expect(!sheet.text.contains("!important"))
     }
+
+    @Test("author origin lifts every selector and marks every declaration")
+    func authorOriginLiftsAndMarks()
+    {
+        let sheet = StyleSheet(
+            [.rule(Rule([".k"], [Declaration("color", "red")]))])
+            .authorOrigin(floor: ["a", "b"])
+        #expect(sheet.text.contains(".k:not(#a):not(#b)"))
+        #expect(sheet.text.contains("color: red !important;"))
+    }
+
+    @Test("the media block survives lifting")
+    func mediaSurvivesLifting()
+    {
+        let sheet = StyleSheet(
+            [.when(.dark, [.rule(Rule([".k"], [Declaration("x", "y")]))])])
+            .authorOrigin(floor: ["a"])
+        #expect(sheet.text.contains("@media"))
+        #expect(sheet.text.contains(".k:not(#a)"))
+        #expect(sheet.text.contains("y !important;"))
+    }
+
 }

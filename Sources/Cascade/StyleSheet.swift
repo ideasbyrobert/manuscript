@@ -12,6 +12,11 @@ package struct StyleSheet: Sendable
         StyleSheet(blocks.map { $0.important })
     }
 
+    package func authorOrigin(floor ids: [String]) -> StyleSheet
+    {
+        StyleSheet(blocks.map { $0.important.lifted(above: ids) })
+    }
+
     package var text: String
     {
         blocks

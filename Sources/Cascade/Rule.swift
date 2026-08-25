@@ -16,6 +16,12 @@ package struct Rule: Sendable
         Rule(selectors, declarations.map { $0.important })
     }
 
+    func lifted(above ids: [String]) -> Rule
+    {
+        let floor = ids.map { ":not(#\($0))" }.joined()
+        return Rule(selectors.map { $0 + floor }, declarations)
+    }
+
     var text: String
     {
         guard !selectors.isEmpty, !declarations.isEmpty else

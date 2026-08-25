@@ -52,4 +52,17 @@ struct RuleTests
             #expect(declaration.isImportant)
         }
     }
+
+    @Test("lifting appends to the last compound, so it still matches")
+    func liftingAppends()
+    {
+        let rule = Rule(
+            [".token.keyword", "pre code"],
+            [Declaration("color", "red")])
+        let lifted = rule.lifted(above: ["a", "b"])
+        #expect(lifted.text.contains(".token.keyword:not(#a):not(#b)"))
+        #expect(lifted.text.contains("pre code:not(#a):not(#b)"))
+        #expect(lifted.text.contains("color: red;"))
+    }
+
 }

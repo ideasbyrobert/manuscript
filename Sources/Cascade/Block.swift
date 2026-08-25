@@ -14,6 +14,17 @@ package indirect enum Block: Sendable
         }
     }
 
+    func lifted(above ids: [String]) -> Block
+    {
+        switch self
+        {
+        case .rule(let rule):
+            return .rule(rule.lifted(above: ids))
+        case .when(let condition, let blocks):
+            return .when(condition, blocks.map { $0.lifted(above: ids) })
+        }
+    }
+
     var text: String
     {
         switch self
