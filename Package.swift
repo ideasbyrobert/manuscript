@@ -43,6 +43,8 @@ let package = Package(
             name: "SpecimenTests",
             dependencies: ["Specimen", "ThemeDomain"]),
         .testTarget(name: "TypographyTests", dependencies: ["Typography"]),
+        .target(name: "Revision"),
+        .testTarget(name: "RevisionTests", dependencies: ["Revision"]),
         .target(name: "Pigment"),
         .testTarget(name: "PigmentTests", dependencies: ["Pigment"]),
         .target(name: "AppleColors", dependencies: ["Pigment"]),
