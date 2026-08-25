@@ -5,61 +5,82 @@ enum Prism
 {
     static let highlighter = Highlighter(
         name: "Prism",
-        containers: [
-            "pre[class*=\"language-\"]",
-            "pre:has(> code[class*=\"language-\"])",
-            "code[class*=\"language-\"]",
-            "pre[class*=\"brush:\"]"
-        ],
+        containers: containers,
         bindings: bindings,
         resets: resets)
+
+    private static let marks = ["language-", "lang-"]
+
+    private static let containers = marks.flatMap
+    {
+        [
+            "pre[class*=\"\($0)\"]",
+            "pre:has(> code[class*=\"\($0)\"])",
+            "code[class*=\"\($0)\"]"
+        ]
+    }
+
+    private static let block = ":is("
+        + marks.map { "[class*=\"\($0)\"]" }.joined(separator: ", ")
+        + ")"
+
+    private static func scoped(_ classes: [String]) -> [String]
+    {
+        classes.map { block + " " + $0 }
+    }
 
     private static let resets: [Rule] =
     [
         Rule(
-            ["pre[class*=\"language-\"]", "code[class*=\"language-\"]"],
+            marks.flatMap
+            {
+                ["pre[class*=\"\($0)\"]", "code[class*=\"\($0)\"]"]
+            },
             [Declaration("text-shadow", "none")]),
         Rule(
-            [".token.operator", ".token.url", ".token.entity",
-             ".language-css .token.string", ".style .token.string"],
+            scoped([".token.operator", ".token.url", ".token.entity",
+                    ".style .token.string"])
+                + [".language-css .token.string"],
             [Declaration("background", "none")]),
-        Rule([".token.namespace"], [Declaration("opacity", "1")]),
-        Rule([".token.bold"], [Declaration("font-weight", "700")]),
-        Rule([".token.italic"], [Declaration("font-style", "italic")])
+        Rule(scoped([".token.namespace"]), [Declaration("opacity", "1")]),
+        Rule(scoped([".token.bold"]), [Declaration("font-weight", "700")]),
+        Rule(
+            scoped([".token.italic"]),
+            [Declaration("font-style", "italic")])
     ]
 
     private static let bindings: [TokenBinding] =
     [
         TokenBinding(
-            [".token.comment", ".token.prolog", ".token.doctype",
-             ".token.cdata"],
+            scoped([".token.comment", ".token.prolog", ".token.doctype",
+             ".token.cdata"]),
             .comment,
             .italic),
         TokenBinding(
-            [".token.keyword", ".token.atrule"],
+            scoped([".token.keyword", ".token.atrule"]),
             .keyword,
             .bold),
-        TokenBinding([".token.class-name"], .type),
-        TokenBinding([".token.function"], .member),
+        TokenBinding(scoped([".token.class-name"]), .type),
+        TokenBinding(scoped([".token.function"]), .member),
         TokenBinding(
-            [".token.string", ".token.char", ".token.attr-value"],
+            scoped([".token.string", ".token.char", ".token.attr-value"]),
             .string),
         TokenBinding(
-            [".token.number", ".token.boolean", ".token.constant",
-             ".token.symbol"],
+            scoped([".token.number", ".token.boolean", ".token.constant",
+             ".token.symbol"]),
             .number),
         TokenBinding(
-            [".token.variable", ".token.regex", ".token.important"],
+            scoped([".token.variable", ".token.regex", ".token.important"]),
             .alternateMember),
         TokenBinding(
-            [".token.tag", ".token.property", ".token.attr-name",
-             ".token.selector", ".token.builtin"],
+            scoped([".token.tag", ".token.property", ".token.attr-name",
+             ".token.selector", ".token.builtin"]),
             .alternateType),
         TokenBinding(
-            [".token.operator", ".token.url", ".token.entity"],
+            scoped([".token.operator", ".token.url", ".token.entity"]),
             .operator),
-        TokenBinding([".token.punctuation"], .punctuation),
-        TokenBinding([".token.inserted"], .addition),
-        TokenBinding([".token.deleted"], .removal)
+        TokenBinding(scoped([".token.punctuation"]), .punctuation),
+        TokenBinding(scoped([".token.inserted"]), .addition),
+        TokenBinding(scoped([".token.deleted"]), .removal)
     ]
 }

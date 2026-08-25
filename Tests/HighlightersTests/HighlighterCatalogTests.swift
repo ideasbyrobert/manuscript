@@ -165,8 +165,8 @@ struct HighlighterCatalogTests
         let painted =
         [
             ".hljs-addition", ".hljs-deletion",
-            ".highlight .err", ".highlight .gd", ".highlight .gi",
-            ".token.operator", ".token.url", ".token.entity"
+            " .err", " .gd", " .gi",
+            " .token.operator", " .token.url", " .token.entity"
         ]
         let neutralised = HighlighterCatalog.all
             .flatMap { $0.resets }
@@ -181,7 +181,7 @@ struct HighlighterCatalogTests
         for selector in painted
         {
             #expect(
-                neutralised.contains(selector),
+                neutralised.contains { $0.hasSuffix(selector) },
                 "\(selector) keeps the ground its own theme painted")
         }
     }
