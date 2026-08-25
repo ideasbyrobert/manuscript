@@ -8,7 +8,8 @@ let package = Package(
     products: [
         .executable(name: "lint", targets: ["lint"]),
         .executable(name: "preview", targets: ["preview"]),
-        .executable(name: "stylesheet", targets: ["stylesheet"])
+        .executable(name: "stylesheet", targets: ["stylesheet"]),
+        .executable(name: "mock-adapter", targets: ["mock-adapter"])
     ],
     targets: [
         .executableTarget(name: "lint"),
@@ -43,6 +44,11 @@ let package = Package(
             name: "SpecimenTests",
             dependencies: ["Specimen", "ThemeDomain"]),
         .testTarget(name: "TypographyTests", dependencies: ["Typography"]),
+        .target(name: "Adapter"),
+        .executableTarget(name: "mock-adapter", dependencies: ["Adapter"]),
+        .testTarget(
+            name: "AdapterTests",
+            dependencies: ["Adapter", "mock-adapter"]),
         .target(name: "Revision"),
         .testTarget(name: "RevisionTests", dependencies: ["Revision"]),
         .target(name: "Pigment"),
