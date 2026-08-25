@@ -15,6 +15,12 @@ let package = Package(
         .target(name: "AppleColors", dependencies: ["Pigment"]),
         .testTarget(
             name: "AppleColorsTests",
-            dependencies: ["AppleColors", "Pigment"])
+            dependencies: ["AppleColors", "Pigment"]),
+        .target(
+            name: "ThemeDomain",
+            dependencies: ["Pigment", "AppleColors"]),
+        .testTarget(
+            name: "ThemeDomainTests",
+            dependencies: ["ThemeDomain", "Pigment", "AppleColors"])
     ]
 )
