@@ -42,4 +42,19 @@ struct PygmentsTests
             #expect(containers.contains(wrapper + " code"))
         }
     }
+    @Test("every class a shipped Pygments theme colours is bound")
+    func theColouredClassesAreBound()
+    {
+        let bound = Set(
+            Pygments.highlighter.bindings.flatMap { $0.selectors })
+        for token in [
+            ".k", ".kd", ".s", ".c", ".c1", ".m", ".mi", ".nf", ".nc",
+            ".nb", ".nt", ".na", ".nv", ".o", ".p", ".se", ".cp",
+            ".gh", ".gu", ".gp", ".go", ".gi", ".gd", ".err"]
+        {
+            #expect(
+                bound.contains(".highlight " + token),
+                "\(token) keeps whatever colour the page gave it")
+        }
+    }
 }

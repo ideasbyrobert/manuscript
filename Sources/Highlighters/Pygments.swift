@@ -52,6 +52,12 @@ package enum Pygments
         TokenBinding(scoped([".p", ".pm"]), .punctuation),
         TokenBinding(scoped([".gi"]), .addition),
         TokenBinding(scoped([".gd"]), .removal),
+        TokenBinding(scoped([".gh", ".gu"]), .type, .bold),
+        TokenBinding(scoped([".gp"]), .preprocessor, .bold),
+        TokenBinding(scoped([".go"]), .dimText),
+        TokenBinding(scoped([".ge"]), .text, .italic),
+        TokenBinding(scoped([".gs", ".ges"]), .text, .bold),
+        TokenBinding(scoped([".g"]), .text),
         TokenBinding(scoped([".err", ".gr", ".gt"]), .error)
     ]
 }
