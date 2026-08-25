@@ -181,7 +181,7 @@ struct MatrixTests
         #expect(report["world"]?.answer == .permitted, "\(report.json)")
     }
 
-    @Test("housed, lldb-dap is exec'd and answers, and the launch is refused")
+    @Test("housed, lldb-dap execs but the launch of a target is refused")
     func debuggerInsideTheSandbox() async throws
     {
         let fixture = try Fixture()
@@ -206,7 +206,8 @@ struct MatrixTests
             helpers: [program],
             within: .seconds(120),
             in: fixture)
-        #expect(report["spawn"] != nil, "\(report.json)")
+        #expect(report["spawn"]?.answer == .permitted, "\(report.json)")
+        #expect(report["launch"]?.answer == .denied, "\(report.json)")
     }
 
     @Test("housed, a foreign global name is refused; the bundle's own is not")
