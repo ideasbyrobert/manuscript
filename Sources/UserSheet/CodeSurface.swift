@@ -10,6 +10,7 @@ enum CodeSurface
         for highlighter in HighlighterCatalog.all
         {
             rules.append(ground(highlighter))
+            rules.append(flatten(highlighter))
             rules.append(contentsOf: highlighter.resets)
             rules.append(contentsOf: highlighter.bindings.map(paint))
         }
@@ -29,6 +30,16 @@ enum CodeSurface
                 Declaration("color", TokenName.reference(.text)),
                 Declaration("font-family", FontStack.mono)
             ])
+    }
+
+    private static func flatten(_ highlighter: Highlighter) -> Rule
+    {
+        Rule(
+            highlighter.containers.map
+            {
+                $0 + " span[style*=\"color\"]:not([class])"
+            },
+            [Declaration("color", "inherit")])
     }
 
     private static func paint(_ binding: TokenBinding) -> Rule
