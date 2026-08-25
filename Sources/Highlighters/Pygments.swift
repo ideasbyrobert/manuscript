@@ -5,7 +5,7 @@ package enum Pygments
 {
     package static let highlighter = Highlighter(
         name: "Pygments",
-        containers: scoped(["pre", "code"]) + hosts,
+        containers: wrappers.flatMap { [$0 + " pre", $0 + " code"] } + hosts,
         bindings: bindings,
         resets: resets)
 
@@ -26,12 +26,14 @@ package enum Pygments
         [$0 + ":has(> pre)", "pre" + $0]
     }
 
+    private static let block = ":is("
+        + wrappers.flatMap { [$0 + " pre", "pre" + $0] }
+            .joined(separator: ", ")
+        + ")"
+
     private static func scoped(_ classes: [String]) -> [String]
     {
-        wrappers.flatMap
-        { wrapper in
-            classes.map { wrapper + " " + $0 }
-        }
+        classes.map { block + " " + $0 }
     }
 
     private static let bindings: [TokenBinding] =

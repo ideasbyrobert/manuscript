@@ -61,7 +61,7 @@ struct UserStyleSheetTests
         for signature in [
             ".hljs-keyword",
             ".token.keyword",
-            ".chroma .k",
+            "pre.codehilite) .k",
             "--prettylights-syntax-keyword",
             "--manuscript-keyword"]
         {

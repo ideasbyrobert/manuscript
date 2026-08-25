@@ -1,5 +1,6 @@
 import Testing
 
+@testable import Cascade
 @testable import Highlighters
 
 @Suite("Where Pygments and Chroma put the block")
@@ -53,8 +54,23 @@ struct PygmentsTests
             ".gh", ".gu", ".gp", ".go", ".gi", ".gd", ".err"]
         {
             #expect(
-                bound.contains(".highlight " + token),
+                bound.contains { $0.hasSuffix(" " + token) },
                 "\(token) keeps whatever colour the page gave it")
+        }
+    }
+
+    @Test("a token is reached only through a block, never a bare wrapper")
+    func everyTokenIsScopedToABlock()
+    {
+        let selectors = Pygments.highlighter.bindings
+            .flatMap { $0.selectors }
+            + Pygments.highlighter.resets.flatMap { $0.selectors }
+            + Pygments.lineBands
+        for selector in selectors
+        {
+            #expect(
+                selector.hasPrefix(":is(") && selector.contains("pre"),
+                "\(selector) would reach any element in a .highlight")
         }
     }
 }
