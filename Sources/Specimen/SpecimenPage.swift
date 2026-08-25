@@ -21,9 +21,16 @@ package enum SpecimenPage
 
     package static func variables(for theme: Theme) -> String
     {
-        PaletteName.allCases
+        let colours = PaletteName.allCases
             .map { "  --\($0.rawValue): \(theme.palette.notation($0));" }
-            .joined(separator: "\n")
+        let body = WeightPairing.numeric(
+            WeightPairing.body(on: theme.appearance))
+        let emphasis = WeightPairing.numeric(
+            WeightPairing.emphasis(on: theme.appearance))
+        return (colours + [
+            "  --bodyWeight: \(body);",
+            "  --emphasisWeight: \(emphasis);"
+        ]).joined(separator: "\n")
     }
 
     package static func roleClasses() -> String
@@ -33,7 +40,7 @@ package enum SpecimenPage
             .joined(separator: "\n")
     }
 
-    package static func codeMarkup(on appearance: Appearance) -> String
+    package static func codeMarkup() -> String
     {
         SpecimenText.code
             .map
@@ -46,13 +53,10 @@ package enum SpecimenPage
                     {
                         return body
                     }
-                    let weight = role == .keyword
-                        ? WeightPairing.numeric(
-                            WeightPairing.emphasis(on: appearance))
-                        : WeightPairing.numeric(
-                            WeightPairing.body(on: appearance))
-                    return "<span class=\"r-\(role.rawValue)\" "
-                        + "style=\"font-weight:\(weight)\">\(body)</span>"
+                    let loud = role == .keyword || role == .type
+                    let mark = loud ? " emphasis" : ""
+                    return "<span class=\"r-\(role.rawValue)\(mark)\">"
+                        + "\(body)</span>"
                 }
                 return "<span class=\"line\">"
                     + pieces.joined()
