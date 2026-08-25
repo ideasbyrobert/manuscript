@@ -11,15 +11,24 @@ guard arguments.count == 2 else
 }
 
 let directory = arguments[1]
+let pairs = ThemePair.all(in: Theme.catalogue())
+let expected = Theme.catalogue().count / 2
+guard pairs.count == expected else
+{
+    FileHandle.standardError.write(
+        Data("stylesheet: \(pairs.count) of \(expected) presets paired\n"
+            .utf8))
+    exit(1)
+}
 do
 {
     try FileManager.default.createDirectory(
         atPath: directory,
         withIntermediateDirectories: true)
-    for pair in ThemePair.all(in: Theme.catalogue())
+    for pair in pairs
     {
-        let path = directory + "/" + pair.name + ".css"
-        let text = UserStyleSheet.sheet(for: pair).text + "\n"
+        let path = directory + "/" + SheetFile.name(for: pair)
+        let text = SheetFile.text(for: pair)
         try text.write(toFile: path, atomically: true, encoding: .utf8)
         print("\(path)  \(text.count) characters")
     }
